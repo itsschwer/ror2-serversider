@@ -1,0 +1,17 @@
+name: create-release
+run-name: Creating and tagging a new release
+on:
+  workflow_dispatch:
+    inputs:
+      debug:
+        description: 'Only create debug artifact'
+        required: false
+        type: boolean
+
+jobs:
+  create-release:
+    permissions:
+      contents: write
+    uses: itsschwer/pressure-drop/.github/workflows/create-release.yml@main
+    with:
+      debug: ${{ inputs.debug }}
