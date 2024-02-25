@@ -14,12 +14,19 @@ namespace ServerSider
 
         public static new Config Config { get; private set; }
 
+        private static Plugin Instance;
+        /// <summary>
+        /// Wrapper for <see cref="UnityEngine.Behaviour.enabled"/>.
+        /// </summary>
+        public static bool Enabled => Instance.enabled;
+
         [System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "Unity Message")]
         private void Awake()
         {
             Log.Init(Logger);
             Config = new Config(base.Config);
 
+            Instance = this;
             // Use run start/end events to run check for if plugin should be active
             Run.onRunStartGlobal += SetPluginActiveState;
             Run.onRunDestroyGlobal += SetPluginActiveState;
