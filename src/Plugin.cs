@@ -20,6 +20,9 @@ namespace ServerSider
         /// </summary>
         public static bool Enabled => Instance.enabled;
 
+        private event System.Action OnManageHooks;
+
+
         [System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "Unity Message")]
         private void Awake()
         {
@@ -31,6 +34,8 @@ namespace ServerSider
             Run.onRunStartGlobal += SetPluginActiveState;
             Run.onRunDestroyGlobal += SetPluginActiveState;
             SetPluginActiveState();
+
+            SetupHooks();
 
             Log.Message("~awake.");
         }
@@ -55,15 +60,22 @@ namespace ServerSider
         [System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "Unity Message")]
         private void OnEnable()
         {
-            // to be implemented
+            OnManageHooks?.Invoke();
             Log.Message("~enabled.");
         }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "Unity Message")]
         private void OnDisable()
         {
-            // to be implemented
+            OnManageHooks?.Invoke();
             Log.Message("~disabled.");
+        }
+
+
+        private void SetupHooks()
+        {
+            OnManageHooks += RescueShipLoopPortal.ManageHook;
+            OnManageHooks += VoidFieldFogTweak.ManageHook;
         }
     }
 }
