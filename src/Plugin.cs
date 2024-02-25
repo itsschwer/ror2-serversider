@@ -77,5 +77,9 @@ namespace ServerSider
             OnManageHooks += RescueShipLoopPortal.ManageHook;
             OnManageHooks += VoidFieldFogTweak.ManageHook;
         }
+
+#if DEBUG
+        private void Update() => Debug.Update();
+#endif
     }
 }
