@@ -19,5 +19,13 @@ namespace ServerSider
         internal static void Info(object data) => _logSource.LogInfo(data);
         internal static void Message(object data) => _logSource.LogMessage(data);
         internal static void Warning(object data) => _logSource.LogWarning(data);
+
+
+        internal static string GetExecutingMethod(int index = 0)
+        {
+            // +2 ∵ this method + method to check
+            var caller = new System.Diagnostics.StackTrace().GetFrame(index+2).GetMethod();
+            return $"{caller.DeclaringType}::{caller.Name}";
+        }
     }
 }
