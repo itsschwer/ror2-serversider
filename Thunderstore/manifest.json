@@ -2,8 +2,8 @@
 	"author": "itsschwer",
 	"name": "ServerSider",
 	"version_number": "0.0.0",
-	"website_url": "https://github.com/itsschwer/",
-	"description": "",
+	"website_url": "https://github.com/itsschwer/ror2-serversider",
+	"description": "Adds small gameplay changes ( rescueShipPortal, voidFieldFogAltStart ) — [ server-side ]",
 	"dependencies": [
 		"bbepis-BepInExPack-5.4.2113",
 		"RiskofThunder-HookGenPatcher-1.2.3"

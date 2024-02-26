@@ -15,8 +15,8 @@ namespace ServerSider
         {
             const string Tweaks = "Tweaks";
             rescueShipPortal = config.Bind<bool>(Tweaks, nameof(rescueShipPortal), true,
-                "Spawn a portal in the Rescue Ship to continue runs where Mithrix is defeated.");
-            voidFieldFogAltStart = config.Bind<bool>(Tweaks, nameof(voidFieldFogAltStart), true,
+                "Spawn a portal in the Rescue Ship to allow looping after defeating Mithrix.");
+            voidFieldFogAltStart = config.Bind<bool>(Tweaks, nameof(voidFieldFogAltStart), false,
                 "Change the Void Fields fog to only become active once a Cell Vent has been activated.");
         }
     }
