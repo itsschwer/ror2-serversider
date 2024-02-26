@@ -78,6 +78,11 @@ namespace ServerSider
             OnManageHooks += VoidFieldFogTweak.ManageHook;
         }
 
+        public static void UnmanageHook(System.Action manageHookMethod)
+        {
+            Instance.OnManageHooks -= manageHookMethod;
+        }
+
 #if DEBUG
         private void Update() => Debug.Update();
 #endif

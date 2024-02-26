@@ -29,11 +29,15 @@ namespace ServerSider
             Log.Debug($"{nameof(RescueShipLoopPortal)}> Unhooked by {Log.GetExecutingMethod()}");
         }
 
-        public static void ManageHook()
+        public static void Rehook(bool condition)
         {
             Unhook();
-            if (Plugin.Enabled && Plugin.Config.RescueShipPortal) Hook();
+            if (condition) Hook();
+
+            Log.Debug($"{nameof(RescueShipLoopPortal)}> Rehooked by {Log.GetExecutingMethod()}");
         }
+
+        public static void ManageHook() => Rehook(Plugin.Enabled && Plugin.Config.RescueShipPortal);
 
 
         // Functionality ===================================

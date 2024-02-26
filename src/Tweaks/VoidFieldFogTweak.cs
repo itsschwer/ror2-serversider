@@ -28,11 +28,15 @@ namespace ServerSider
             Log.Debug($"{nameof(VoidFieldFogTweak)}> Unhooked by {Log.GetExecutingMethod()}");
         }
 
-        public static void ManageHook()
+        public static void Rehook(bool condition)
         {
             Unhook();
-            if (Plugin.Enabled && Plugin.Config.VoidFieldFogAltStart) Hook();
+            if (condition) Hook();
+
+            Log.Debug($"{nameof(VoidFieldFogTweak)}> Rehooked by {Log.GetExecutingMethod()}");
         }
+
+        public static void ManageHook() => Rehook(Plugin.Enabled && Plugin.Config.VoidFieldFogAltStart);
 
 
         // Functionality ===================================
