@@ -31,7 +31,7 @@
         <ConvertToAbsolutePath Paths="$(ProductDir)">
             <Output TaskParameter="AbsolutePaths" PropertyName="AbsoluteProductDir" />
         </ConvertToAbsolutePath>
-        <Message Importance="High" Text="Package prepared -> '$(AbsoluteProductDir)'" />
+        <Message Importance="High" Text="Package prepared '$(AbsoluteProductDir)'" />
 
         <ZipDirectory SourceDirectory="$(ProductDir)" DestinationFile="$(RootDir)$(MSBuildProjectName)--$(Configuration).zip" Overwrite="true" />
     </Target>
