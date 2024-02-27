@@ -1,7 +1,7 @@
 ﻿{
 	"author": "itsschwer",
 	"name": "ServerSider",
-	"version_number": "0.0.0",
+	"version_number": "1.0.0",
 	"website_url": "https://github.com/itsschwer/ror2-serversider",
 	"description": "Adds small gameplay changes ( rescueShipPortal, voidFieldFogAltStart ) — [ server-side ]",
 	"dependencies": [
