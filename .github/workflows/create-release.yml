@@ -1,6 +1,7 @@
 name: create-release
 run-name: Creating and tagging a new release
 on:
+  # https://github.com/orgs/community/discussions/25219#discussioncomment-3246917
   workflow_dispatch:
     inputs:
       debug:
