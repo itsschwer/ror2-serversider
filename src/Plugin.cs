@@ -1,10 +1,9 @@
-using BepInEx;
+﻿using BepInEx;
 using RoR2;
 
 namespace ServerSider
 {
     [BepInPlugin(GUID, Name, Version)]
-
     public sealed class Plugin : BaseUnityPlugin
     {
         public const string GUID = Author + "." + Name;
@@ -12,21 +11,22 @@ namespace ServerSider
         public const string Name = "ServerSider";
         public const string Version = "1.0.0";
 
+        internal static new BepInEx.Logging.ManualLogSource Logger { get; private set; }
+
         public static new Config Config { get; private set; }
 
         private static Plugin Instance;
-        /// <summary>
-        /// Wrapper for <see cref="UnityEngine.Behaviour.enabled"/>.
-        /// </summary>
-        public static bool Enabled => Instance.enabled;
+        internal static bool Enabled => Instance.enabled;
 
         private event System.Action OnManageHooks;
 
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "Unity Message")]
         private void Awake()
         {
-            Log.Init(Logger);
+            // Use Plugin.GUID instead of Plugin.Name as source name
+            BepInEx.Logging.Logger.Sources.Remove(base.Logger);
+            Logger = BepInEx.Logging.Logger.CreateLogSource(Plugin.GUID);
+
             Config = new Config(base.Config);
 
             Instance = this;
@@ -37,7 +37,19 @@ namespace ServerSider
 
             SetupHooks();
 
-            Log.Message("~awake.");
+            Logger.LogMessage("~awake.");
+        }
+
+        private void OnEnable()
+        {
+            OnManageHooks?.Invoke();
+            Logger.LogMessage("~enabled.");
+        }
+
+        private void OnDisable()
+        {
+            OnManageHooks?.Invoke();
+            Logger.LogMessage("~disabled.");
         }
 
         /// <summary>
@@ -54,21 +66,7 @@ namespace ServerSider
         private void SetActive(bool value)
         {
             this.enabled = value;
-            Log.Message($"~{(value ? "active" : "inactive")}.");
-        }
-
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "Unity Message")]
-        private void OnEnable()
-        {
-            OnManageHooks?.Invoke();
-            Log.Message("~enabled.");
-        }
-
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "Unity Message")]
-        private void OnDisable()
-        {
-            OnManageHooks?.Invoke();
-            Log.Message("~disabled.");
+            Logger.LogMessage($"~{(value ? "active" : "inactive")}.");
         }
 
 
@@ -81,6 +79,13 @@ namespace ServerSider
         public static void UnmanageHook(System.Action manageHookMethod)
         {
             Instance.OnManageHooks -= manageHookMethod;
+        }
+
+        internal static string GetExecutingMethod(int index = 0)
+        {
+            // +2 ∵ this method + method to check
+            var caller = new System.Diagnostics.StackTrace().GetFrame(index + 2).GetMethod();
+            return $"{caller.DeclaringType}::{caller.Name}";
         }
 
 #if DEBUG

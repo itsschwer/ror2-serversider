@@ -14,7 +14,7 @@ namespace ServerSider
             On.RoR2.ArenaMissionController.OnStartServer += ArenaMissionController_OnStartServer;
             On.RoR2.ArenaMissionController.BeginRound += ArenaMissionController_BeginRound;
 
-            Log.Debug($"{nameof(VoidFieldFogTweak)}> Hooked by {Log.GetExecutingMethod()}");
+            Plugin.Logger.LogDebug($"{nameof(VoidFieldFogTweak)}> Hooked by {Plugin.GetExecutingMethod()}");
         }
 
         public static void Unhook()
@@ -25,7 +25,7 @@ namespace ServerSider
             On.RoR2.ArenaMissionController.OnStartServer -= ArenaMissionController_OnStartServer;
             On.RoR2.ArenaMissionController.BeginRound -= ArenaMissionController_BeginRound;
 
-            Log.Debug($"{nameof(VoidFieldFogTweak)}> Unhooked by {Log.GetExecutingMethod()}");
+            Plugin.Logger.LogDebug($"{nameof(VoidFieldFogTweak)}> Unhooked by {Plugin.GetExecutingMethod()}");
         }
 
         public static void Rehook(bool condition)
@@ -33,7 +33,7 @@ namespace ServerSider
             Unhook();
             if (condition) Hook();
 
-            Log.Debug($"{nameof(VoidFieldFogTweak)}> Rehooked by {Log.GetExecutingMethod()}");
+            Plugin.Logger.LogDebug($"{nameof(VoidFieldFogTweak)}> Rehooked by {Plugin.GetExecutingMethod()}");
         }
 
         public static void ManageHook() => Rehook(Plugin.Enabled && Plugin.Config.VoidFieldFogAltStart);
@@ -53,7 +53,6 @@ namespace ServerSider
             if (self.currentRound == 1) self.SetFogActive(true);
         }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Member Access", "Publicizer001:Accessing a member that was not originally public")]
         private static void SetFogActive(this ArenaMissionController controller, bool value)
         {
 #if DEBUG

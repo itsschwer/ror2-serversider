@@ -16,7 +16,7 @@ namespace ServerSider
 
             On.RoR2.HoldoutZoneController.Start += HoldoutZoneController_Start;
 
-            Log.Debug($"{nameof(RescueShipLoopPortal)}> Hooked by {Log.GetExecutingMethod()}");
+            Plugin.Logger.LogDebug($"{nameof(RescueShipLoopPortal)}> Hooked by {Plugin.GetExecutingMethod()}");
         }
 
         public static void Unhook()
@@ -26,7 +26,7 @@ namespace ServerSider
 
             On.RoR2.HoldoutZoneController.Start -= HoldoutZoneController_Start;
 
-            Log.Debug($"{nameof(RescueShipLoopPortal)}> Unhooked by {Log.GetExecutingMethod()}");
+            Plugin.Logger.LogDebug($"{nameof(RescueShipLoopPortal)}> Unhooked by {Plugin.GetExecutingMethod()}");
         }
 
         public static void Rehook(bool condition)
@@ -34,7 +34,7 @@ namespace ServerSider
             Unhook();
             if (condition) Hook();
 
-            Log.Debug($"{nameof(RescueShipLoopPortal)}> Rehooked by {Log.GetExecutingMethod()}");
+            Plugin.Logger.LogDebug($"{nameof(RescueShipLoopPortal)}> Rehooked by {Plugin.GetExecutingMethod()}");
         }
 
         public static void ManageHook() => Rehook(Plugin.Enabled && Plugin.Config.RescueShipPortal);
@@ -49,7 +49,7 @@ namespace ServerSider
             if (self.inBoundsObjectiveToken == "OBJECTIVE_MOON_CHARGE_DROPSHIP")
             {
 #if DEBUG
-                Log.Debug($"Dropship> pos: {self.transform.position} | rot: {self.transform.rotation} | euler: {self.transform.rotation.eulerAngles} | up: {self.transform.up} | forward: {self.transform.forward} | right: {self.transform.right}");
+                Plugin.Logger.LogDebug($"Dropship> pos: {self.transform.position} | rot: {self.transform.rotation} | euler: {self.transform.rotation.eulerAngles} | up: {self.transform.up} | forward: {self.transform.forward} | right: {self.transform.right}");
 #endif
                 Vector3 position = self.transform.position;
                 position += (self.transform.up * 10f);
@@ -68,7 +68,7 @@ namespace ServerSider
             GameObject gameObject = Object.Instantiate(isc.prefab, position, rotation);
             gameObject.GetComponent<SceneExitController>().useRunNextStageScene = true;
 #if DEBUG
-            Log.Debug($"{nameof(RescueShipLoopPortal)}> pos: {position} | rot: {rotation}");
+            Plugin.Logger.LogDebug($"{nameof(RescueShipLoopPortal)}> pos: {position} | rot: {rotation}");
 #endif
             NetworkServer.Spawn(gameObject);
 
