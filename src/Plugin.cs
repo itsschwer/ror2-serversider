@@ -33,6 +33,7 @@ namespace ServerSider
             // Use run start/end events to run check for if plugin should be active
             Run.onRunStartGlobal += SetPluginActiveState;
             Run.onRunDestroyGlobal += SetPluginActiveState;
+            Stage.onServerStageBegin += ReloadConfig;
             SetPluginActiveState();
 
             SetupHooks();
@@ -69,6 +70,10 @@ namespace ServerSider
             Logger.LogMessage($"~{(value ? "active" : "inactive")}.");
         }
 
+        private void ReloadConfig(Stage _)
+        {
+            base.Config.Reload();
+        }
 
         private void SetupHooks()
         {

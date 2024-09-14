@@ -13,6 +13,7 @@ namespace ServerSider
             _hooked = true;
 
             On.RoR2.FriendlyFireManager.ShouldDirectHitProceed += FriendlyFireManager_ShouldDirectHitProceed;
+            On.RoR2.FriendlyFireManager.ShouldSplashHitProceed += FriendlyFireManager_ShouldSplashHitProceed;
             On.RoR2.HealthComponent.TakeDamage += HealthComponent_TakeDamage;
 
             Plugin.Logger.LogDebug($"{nameof(FriendlyFireHeals)}> Hooked by {Plugin.GetExecutingMethod()}");
@@ -24,6 +25,7 @@ namespace ServerSider
             _hooked = false;
 
             On.RoR2.FriendlyFireManager.ShouldDirectHitProceed -= FriendlyFireManager_ShouldDirectHitProceed;
+            On.RoR2.FriendlyFireManager.ShouldSplashHitProceed -= FriendlyFireManager_ShouldSplashHitProceed;
             On.RoR2.HealthComponent.TakeDamage -= HealthComponent_TakeDamage;
 
             Plugin.Logger.LogDebug($"{nameof(FriendlyFireHeals)}> Unhooked by {Plugin.GetExecutingMethod()}");
@@ -47,20 +49,27 @@ namespace ServerSider
             else return orig(victim, attackerTeamIndex);
         }
 
+        private static bool FriendlyFireManager_ShouldSplashHitProceed(On.RoR2.FriendlyFireManager.orig_ShouldSplashHitProceed orig, HealthComponent victim, TeamIndex attackerTeamIndex)
+        {
+            if (attackerTeamIndex == TeamIndex.Player && victim.body.teamComponent.teamIndex == attackerTeamIndex) return true;
+            else return orig(victim, attackerTeamIndex);
+        }
+
         private static void HealthComponent_TakeDamage(On.RoR2.HealthComponent.orig_TakeDamage orig, HealthComponent self, DamageInfo damageInfo)
         {
             if (!NetworkServer.active) {
                 UnityEngine.Debug.LogWarning("[Server] function 'System.Void RoR2.HealthComponent::TakeDamage(RoR2.DamageInfo)' called on client");
             }
             else {
-                TeamComponent attackerTeam = damageInfo.attacker.GetComponent<TeamComponent>();
+                TeamComponent attackerTeam = damageInfo.attacker?.GetComponent<TeamComponent>();
                 if (attackerTeam != null) {
                     bool isToPlayerTeam = self.body.teamComponent.teamIndex == TeamIndex.Player;
                     bool isFromPlayerTeam = attackerTeam.teamIndex == TeamIndex.Player;
                     if (isToPlayerTeam && isFromPlayerTeam) {
-                        self.Heal(damageInfo.damage * 0.01f, default);
+                        float healAmount = damageInfo.damage * Plugin.Config.FriendlyFireHealsFactor;
+                        self.Heal(healAmount, default);
 #if DEBUG || true
-                        Plugin.Logger.LogDebug($"{nameof(FriendlyFireHeals)}> Healed {damageInfo.damage * 0.01f} ({self.body.GetDisplayName()} <- {damageInfo.attacker.GetComponent<CharacterBody>()?.GetDisplayName()})");
+                        Plugin.Logger.LogDebug($"{nameof(FriendlyFireHeals)}> Healed {healAmount} ({self.body.GetDisplayName()} <- {damageInfo.attacker.GetComponent<CharacterBody>()?.GetDisplayName()})");
 #endif
                         return;
                     }
