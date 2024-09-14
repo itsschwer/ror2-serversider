@@ -7,13 +7,17 @@ namespace ServerSider
         // Tweaks
         private readonly ConfigEntry<bool> rescueShipPortal;
         private readonly ConfigEntry<bool> voidFieldFogAltStart;
+#if FRIENDLYFIREHEALS
         private readonly ConfigEntry<bool> friendlyFireHeals;
         private readonly ConfigEntry<float> friendlyFireHealsFactor;
+#endif
         // Accessors
         public bool RescueShipPortal => rescueShipPortal.Value;
         public bool VoidFieldFogAltStart => voidFieldFogAltStart.Value;
+#if FRIENDLYFIREHEALS
         public bool FriendlyFireHeals => friendlyFireHeals.Value;
         public float FriendlyFireHealsFactor => friendlyFireHealsFactor.Value;
+#endif
 
         public Config(ConfigFile config)
         {
@@ -22,10 +26,12 @@ namespace ServerSider
                 "Spawn a portal in the Rescue Ship to allow looping after defeating Mithrix.");
             voidFieldFogAltStart = config.Bind<bool>(Tweaks, nameof(voidFieldFogAltStart), false,
                 "Change the Void Fields fog to only become active once a Cell Vent has been activated.");
+#if FRIENDLYFIREHEALS
             friendlyFireHeals = config.Bind<bool>(Tweaks, nameof(friendlyFireHeals), false,
                 "TBA");
             friendlyFireHealsFactor = config.Bind<float>(Tweaks, nameof(friendlyFireHealsFactor), 0.2f,
                 "TBA");
+#endif
         }
     }
 }

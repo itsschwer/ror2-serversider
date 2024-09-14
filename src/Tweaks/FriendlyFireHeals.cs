@@ -1,4 +1,8 @@
-﻿using RoR2;
+﻿// Give up:
+//  - breaks Railgunner Concussion Device
+//  - applies DOTs (that heal)
+#if FRIENDLYFIREHEALS
+using RoR2;
 using UnityEngine.Networking;
 
 namespace ServerSider
@@ -61,17 +65,18 @@ namespace ServerSider
                 UnityEngine.Debug.LogWarning("[Server] function 'System.Void RoR2.HealthComponent::TakeDamage(RoR2.DamageInfo)' called on client");
             }
             else {
-                TeamComponent attackerTeam = damageInfo.attacker?.GetComponent<TeamComponent>();
-                if (attackerTeam != null) {
-                    bool isToPlayerTeam = self.body.teamComponent.teamIndex == TeamIndex.Player;
-                    bool isFromPlayerTeam = attackerTeam.teamIndex == TeamIndex.Player;
-                    if (isToPlayerTeam && isFromPlayerTeam) {
-                        float healAmount = damageInfo.damage * Plugin.Config.FriendlyFireHealsFactor;
-                        self.Heal(healAmount, default);
+                if (self.body.teamComponent.teamIndex == TeamIndex.Player) {
+                    TeamComponent attackerTeam = damageInfo.attacker?.GetComponent<TeamComponent>();
+                    if (attackerTeam != null) {
+                        if (attackerTeam.teamIndex == TeamIndex.Player) {
+                            float healAmount = damageInfo.damage * Plugin.Config.FriendlyFireHealsFactor;
+                            self.Heal(healAmount, default);
 #if DEBUG || true
-                        Plugin.Logger.LogDebug($"{nameof(FriendlyFireHeals)}> Healed {healAmount} ({self.body.GetDisplayName()} <- {damageInfo.attacker.GetComponent<CharacterBody>()?.GetDisplayName()})");
+                            Plugin.Logger.LogDebug($"{nameof(FriendlyFireHeals)}> Healed {healAmount} ({self.body.GetDisplayName()} <- {damageInfo.attacker.GetComponent<CharacterBody>()?.GetDisplayName()})");
+                            Plugin.Logger.LogDebug(new System.Diagnostics.StackTrace(true).ToString());
 #endif
-                        return;
+                            return;
+                        }
                     }
                 }
 
@@ -80,3 +85,4 @@ namespace ServerSider
         }
     }
 }
+#endif
