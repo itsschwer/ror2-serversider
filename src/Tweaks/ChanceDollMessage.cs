@@ -23,6 +23,7 @@ namespace ServerSider
             }
 
             IL.RoR2.ShrineChanceBehavior.AddShrineStack += ShrineChanceBehavior_AddShrineStack;
+            On.RoR2.ShrineChanceBehavior.AddShrineStack += ShrineChanceBehavior_AddShrineStack_On;
 
             Plugin.Logger.LogDebug($"{nameof(ChanceDollMessage)}> Hooked by {Plugin.GetExecutingMethod()}");
         }
@@ -33,6 +34,7 @@ namespace ServerSider
             _hooked = false;
 
             IL.RoR2.ShrineChanceBehavior.AddShrineStack -= ShrineChanceBehavior_AddShrineStack;
+            On.RoR2.ShrineChanceBehavior.AddShrineStack -= ShrineChanceBehavior_AddShrineStack_On;
 
             Plugin.Logger.LogDebug($"{nameof(ChanceDollMessage)}> Unhooked by {Plugin.GetExecutingMethod()}");
         }
@@ -56,11 +58,11 @@ namespace ServerSider
             Func<Instruction, bool>[] match = {
                 x => x.MatchNewobj<Chat.SubjectFormatChatMessage>(),
                 x => x.MatchDup(),
-                x => x.MatchLdloc(0),
-                x => x.MatchCallOrCallvirt<Chat.SubjectFormatChatMessage>("set_" + nameof(Chat.SubjectFormatChatMessage.subjectAsCharacterBody)),
+                x => x.MatchLdloc(1),
+                x => x.MatchCallOrCallvirt<SubjectChatMessage>("set_" + nameof(SubjectChatMessage.subjectAsCharacterBody)),
                 x => x.MatchDup(),
                 x => x.MatchLdloc(4),
-                x => x.MatchStfld<Chat.SubjectFormatChatMessage>(nameof(Chat.SubjectFormatChatMessage.baseToken)),
+                x => x.MatchStfld<SubjectChatMessage>(nameof(SubjectChatMessage.baseToken)),
                 x => x.MatchCallOrCallvirt(typeof(Chat), nameof(Chat.SendBroadcastChat))
             };
 
@@ -68,29 +70,38 @@ namespace ServerSider
 
             if (matched) {
                 ILLabel originalBroadcast = c.MarkLabel();
-                c.Index--;
                 // if (chanceDollWin)
                 c.Emit(OpCodes.Ldarg_0);
                 c.Emit<ShrineChanceBehavior>(OpCodes.Ldfld, nameof(chanceDollWin));
                 c.Emit(OpCodes.Brfalse_S, originalBroadcast);
                 // send alternate message
                 c.Emit(OpCodes.Ldloc_1);
-                c.Emit(OpCodes.Ldloc_S, 4);
+                c.Emit(OpCodes.Ldloc, 4);
                 c.EmitDelegate<Action<CharacterBody, string>>((activator, baseToken) => {
+                    // Use SimpleChatMessage -- can't use SubjectFormatChatMessage without adding custom language tokens (including on clients)
                     string baseMessage = Language.GetStringFormatted(baseToken, [activator.GetUserName()]);
-                    if (Language.currentLanguage == Language.english) baseMessage.Replace("!", " greatly!");
-                    else baseMessage.Replace("!", "+!"); // untested
                     Chat.SendBroadcastChat(new Chat.SimpleChatMessage {
-                        baseToken = baseMessage
+                        baseToken = baseMessage.Replace("!", (Language.currentLanguage == Language.english) ? "greatly!" : "!+") // untested on languages other than English
                     });
                 });
+
                 ILLabel end = c.MarkLabel();
                 c.Emit(OpCodes.Br_S, end);
+
+                c.MarkLabel(originalBroadcast);
                 c.GotoNext(MoveType.After, match);
                 c.MarkLabel(end);
 
                 Plugin.Logger.LogDebug(il.ToString());
             }
+            else Plugin.Logger.LogError($"{nameof(ChanceDollMessage)}> Cannot hook: failed to match IL instructions.");
+        }
+
+        private static void ShrineChanceBehavior_AddShrineStack_On(On.RoR2.ShrineChanceBehavior.orig_AddShrineStack orig, ShrineChanceBehavior self, Interactor activator)
+        {
+            orig(self, activator);
+            string message = $"{activator.GetComponent<CharacterBody>().GetUserName()} smiles.";
+            if ((bool)chanceDollWin.GetValue(self)) Chat.SendBroadcastChat(new Chat.SimpleChatMessage { baseToken = $"<style=cStack>></style> <style=cShrine>{message}</style>" });
         }
     }
 }
