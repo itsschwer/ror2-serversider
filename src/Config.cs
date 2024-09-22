@@ -33,7 +33,7 @@ namespace ServerSider
             voidFieldFogAltStart = config.Bind<bool>(Tweaks, nameof(voidFieldFogAltStart), false,
                 "Change the Void Fields fog to only become active once a Cell Vent has been activated.");
             chanceDollMessage = config.Bind<bool>(Tweaks, nameof(chanceDollMessage), true,
-                "Reword the Shrine of Chance reward message to indicate if a Chance Doll affected the reward.");
+                "Reword the Shrine of Chance success message to indicate if a Chance Doll affected the reward.");
 #if FRIENDLYFIREHEALS
             friendlyFireHeals = config.Bind<bool>(Tweaks, nameof(friendlyFireHeals), false,
                 "TBA");
