@@ -23,7 +23,6 @@ namespace ServerSider
             }
 
             IL.RoR2.ShrineChanceBehavior.AddShrineStack += ShrineChanceBehavior_AddShrineStack;
-            On.RoR2.ShrineChanceBehavior.AddShrineStack += ShrineChanceBehavior_AddShrineStack_On;
 
             Plugin.Logger.LogDebug($"{nameof(ChanceDollMessage)}> Hooked by {Plugin.GetExecutingMethod()}");
         }
@@ -34,7 +33,6 @@ namespace ServerSider
             _hooked = false;
 
             IL.RoR2.ShrineChanceBehavior.AddShrineStack -= ShrineChanceBehavior_AddShrineStack;
-            On.RoR2.ShrineChanceBehavior.AddShrineStack -= ShrineChanceBehavior_AddShrineStack_On;
 
             Plugin.Logger.LogDebug($"{nameof(ChanceDollMessage)}> Unhooked by {Plugin.GetExecutingMethod()}");
         }
@@ -95,13 +93,6 @@ namespace ServerSider
                 Plugin.Logger.LogDebug(il.ToString());
             }
             else Plugin.Logger.LogError($"{nameof(ChanceDollMessage)}> Cannot hook: failed to match IL instructions.");
-        }
-
-        private static void ShrineChanceBehavior_AddShrineStack_On(On.RoR2.ShrineChanceBehavior.orig_AddShrineStack orig, ShrineChanceBehavior self, Interactor activator)
-        {
-            orig(self, activator);
-            string message = $"{activator.GetComponent<CharacterBody>().GetUserName()} smiles.";
-            if ((bool)chanceDollWin.GetValue(self)) Chat.SendBroadcastChat(new Chat.SimpleChatMessage { baseToken = $"<style=cStack>></style> <style=cShrine>{message}</style>" });
         }
     }
 }
