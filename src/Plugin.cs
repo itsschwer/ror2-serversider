@@ -79,6 +79,7 @@ namespace ServerSider
         {
             OnManageHooks += RescueShipLoopPortal.ManageHook;
             OnManageHooks += VoidFieldFogTweak.ManageHook;
+            OnManageHooks += ChanceDollMessage.ManageHook;
 #if FRIENDLYFIREHEALS
             OnManageHooks += FriendlyFireHeals.ManageHook;
 #endif

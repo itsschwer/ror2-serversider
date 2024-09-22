@@ -7,6 +7,7 @@ namespace ServerSider
         // Tweaks
         private readonly ConfigEntry<bool> rescueShipPortal;
         private readonly ConfigEntry<bool> voidFieldFogAltStart;
+        private readonly ConfigEntry<bool> chanceDollMessage;
 #if FRIENDLYFIREHEALS
         private readonly ConfigEntry<bool> friendlyFireHeals;
         private readonly ConfigEntry<float> friendlyFireHealsFactor;
@@ -14,6 +15,7 @@ namespace ServerSider
         // Accessors
         public bool RescueShipPortal => rescueShipPortal.Value;
         public bool VoidFieldFogAltStart => voidFieldFogAltStart.Value;
+        public bool ChanceDollMessage => chanceDollMessage.Value;
 #if FRIENDLYFIREHEALS
         public bool FriendlyFireHeals => friendlyFireHeals.Value;
         public float FriendlyFireHealsFactor => friendlyFireHealsFactor.Value;
@@ -26,6 +28,8 @@ namespace ServerSider
                 "Spawn a portal in the Rescue Ship to allow looping after defeating Mithrix.");
             voidFieldFogAltStart = config.Bind<bool>(Tweaks, nameof(voidFieldFogAltStart), false,
                 "Change the Void Fields fog to only become active once a Cell Vent has been activated.");
+            chanceDollMessage = config.Bind<bool>(Tweaks, nameof(chanceDollMessage), true,
+                "Reword the Shrine of Chance reward message to indicate if a Chance Doll affected the reward.");
 #if FRIENDLYFIREHEALS
             friendlyFireHeals = config.Bind<bool>(Tweaks, nameof(friendlyFireHeals), false,
                 "TBA");
