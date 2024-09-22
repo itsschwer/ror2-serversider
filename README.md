@@ -14,6 +14,9 @@ Name | Effect | Enabled by default?
 `voidFieldFogAltStart` | Changes the *Void Fields*' fog to only become active once a *Cell Vent* has been activated *(rather than on entry)* | `false`
 `chanceDollMessage` | Reword the *Shrine of Chance* success message to indicate if a *Chance Doll* affected the reward | `true`
 
+## todo
+- add demo screenshots/gifs
+
 <!--
 ## see also
 
