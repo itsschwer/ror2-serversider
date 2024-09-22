@@ -4,7 +4,9 @@ A \[ server-side / host-only \] mod that adds small gameplay changes.
 
 ## gameplay changes
 
-*use the config to enable or disable changes (relaunch required).*
+> The configuration file is automatically reloaded at the start (and end) of each run.
+>
+> *[***OptionGenerator***](https://thunderstore.io/package/6thmoon/OptionGenerator/) *(+[***Risk Of Options***](https://thunderstore.io/package/Rune580/Risk_Of_Options/))* can be used to change the configuration in-game, rather than editing the file or using **r2modman**.*
 
 Change | Effect | Enabled by default?
 ---    | ---    | ---

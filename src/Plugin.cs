@@ -18,7 +18,7 @@ namespace ServerSider
         private static Plugin Instance;
         internal static bool Enabled => Instance.enabled;
 
-        private event System.Action OnManageHooks;
+        private event System.Action OnEnabledStatusChange;
 
 
         private void Awake()
@@ -33,7 +33,6 @@ namespace ServerSider
             // Use run start/end events to run check for if plugin should be active
             Run.onRunStartGlobal += SetPluginActiveState;
             Run.onRunDestroyGlobal += SetPluginActiveState;
-            Stage.onServerStageBegin += ReloadConfig;
             SetPluginActiveState();
 
             SetupHooks();
@@ -43,13 +42,13 @@ namespace ServerSider
 
         private void OnEnable()
         {
-            OnManageHooks?.Invoke();
+            OnEnabledStatusChange?.Invoke();
             Logger.LogMessage("~enabled.");
         }
 
         private void OnDisable()
         {
-            OnManageHooks?.Invoke();
+            OnEnabledStatusChange?.Invoke();
             Logger.LogMessage("~disabled.");
         }
 
@@ -70,16 +69,11 @@ namespace ServerSider
             Logger.LogMessage($"~{(value ? "active" : "inactive")}.");
         }
 
-        private void ReloadConfig(Stage _)
-        {
-            base.Config.Reload();
-        }
-
         private void SetupHooks()
         {
-            OnManageHooks += RescueShipLoopPortal.ManageHook;
-            OnManageHooks += VoidFieldFogTweak.ManageHook;
-            OnManageHooks += ChanceDollMessage.ManageHook;
+            OnEnabledStatusChange += RescueShipLoopPortal.ManageHook;
+            OnEnabledStatusChange += VoidFieldFogTweak.ManageHook;
+            OnEnabledStatusChange += ChanceDollMessage.ManageHook;
 #if FRIENDLYFIREHEALS
             OnManageHooks += FriendlyFireHeals.ManageHook;
 #endif
@@ -87,7 +81,7 @@ namespace ServerSider
 
         public static void UnmanageHook(System.Action manageHookMethod)
         {
-            Instance.OnManageHooks -= manageHookMethod;
+            Instance.OnEnabledStatusChange -= manageHookMethod;
         }
 
         internal static string GetExecutingMethod(int index = 0)

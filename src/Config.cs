@@ -4,6 +4,10 @@ namespace ServerSider
 {
     public sealed class Config
     {
+        private readonly ConfigFile file;
+        internal void Reload() { Plugin.Logger.LogDebug($"Reloading {file.ConfigFilePath.Substring(file.ConfigFilePath.LastIndexOf(System.IO.Path.DirectorySeparatorChar) + 1)}"); file.Reload(); }
+
+
         // Tweaks
         private readonly ConfigEntry<bool> rescueShipPortal;
         private readonly ConfigEntry<bool> voidFieldFogAltStart;
