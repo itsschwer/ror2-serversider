@@ -2,6 +2,9 @@
 
 A \[ server-side / host-only \] mod that adds small gameplay changes.
 
+## compatibility
+This mod is compatible with the *Seekers of the Storm* update ***and*** earlier patches.
+
 ## gameplay changes
 
 > The configuration file is automatically reloaded at the start (and end) of each run.
