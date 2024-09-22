@@ -79,7 +79,7 @@ namespace ServerSider
                     // Use SimpleChatMessage -- can't use SubjectFormatChatMessage without adding custom language tokens (including on clients)
                     string baseMessage = Language.GetStringFormatted(baseToken, [activator.GetUserName()]);
                     Chat.SendBroadcastChat(new Chat.SimpleChatMessage {
-                        baseToken = baseMessage.Replace("!", (Language.currentLanguage == Language.english) ? "greatly!" : "!+") // untested on languages other than English
+                        baseToken = baseMessage.Replace("!", (Language.currentLanguage == Language.english) ? " greatly!" : "!+") // untested on languages other than English
                     });
                 });
 
@@ -89,8 +89,9 @@ namespace ServerSider
                 c.MarkLabel(originalBroadcast);
                 c.GotoNext(MoveType.After, match);
                 c.MarkLabel(end);
-
+#if DEBUG
                 Plugin.Logger.LogDebug(il.ToString());
+#endif
             }
             else Plugin.Logger.LogError($"{nameof(ChanceDollMessage)}> Cannot hook: failed to match IL instructions.");
         }
