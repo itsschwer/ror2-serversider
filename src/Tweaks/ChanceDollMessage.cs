@@ -45,7 +45,7 @@ namespace ServerSider
             Plugin.Logger.LogDebug($"{nameof(ChanceDollMessage)}> Rehooked by {Plugin.GetExecutingMethod()}");
         }
 
-        public static void ManageHook() => Rehook(Plugin.Enabled && Plugin.Config.RescueShipPortal);
+        public static void ManageHook() => Rehook(Plugin.Enabled && Plugin.Config.ChanceDollMessage);
 
         // Functionality ===============================
 
