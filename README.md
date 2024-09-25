@@ -35,6 +35,4 @@ Name | Effect | Enabled by default?
 
 ## todo
 - link to pressuredrop (mp-focused)
-- document `quitToLobbyButton`
-- find out why quitting to lobby doesn't destroy the pause menu automatically
 - rework tweak hooking logic (non-static, abstract base + a static container class?)

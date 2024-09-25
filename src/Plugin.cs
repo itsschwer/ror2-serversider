@@ -74,7 +74,6 @@ namespace ServerSider
             OnEnabledStatusChange += RescueShipLoopPortal.ManageHook;
             OnEnabledStatusChange += VoidFieldFogTweak.ManageHook;
             OnEnabledStatusChange += ChanceDollMessage.ManageHook;
-            OnEnabledStatusChange += QuitToLobbyButton.ManageHook;
 #if FRIENDLYFIREHEALS
             OnManageHooks += FriendlyFireHeals.ManageHook;
 #endif

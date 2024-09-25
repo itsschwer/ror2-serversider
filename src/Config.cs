@@ -12,7 +12,6 @@ namespace ServerSider
         private readonly ConfigEntry<bool> rescueShipPortal;
         private readonly ConfigEntry<bool> voidFieldFogAltStart;
         private readonly ConfigEntry<bool> chanceDollMessage;
-        private readonly ConfigEntry<bool> quitToLobbyButton;
 #if FRIENDLYFIREHEALS
         private readonly ConfigEntry<bool> friendlyFireHeals;
         private readonly ConfigEntry<float> friendlyFireHealsFactor;
@@ -21,7 +20,6 @@ namespace ServerSider
         public bool RescueShipPortal => rescueShipPortal.Value;
         public bool VoidFieldFogAltStart => voidFieldFogAltStart.Value;
         public bool ChanceDollMessage => chanceDollMessage.Value;
-        public bool QuitToLobbyButton => quitToLobbyButton.Value;
 #if FRIENDLYFIREHEALS
         public bool FriendlyFireHeals => friendlyFireHeals.Value;
         public float FriendlyFireHealsFactor => friendlyFireHealsFactor.Value;
@@ -38,8 +36,6 @@ namespace ServerSider
                 "Change the Void Fields fog to only become active once a Cell Vent has been activated.");
             chanceDollMessage = config.Bind<bool>(Tweaks, nameof(chanceDollMessage), true,
                 "Reword the Shrine of Chance success message to indicate if a Chance Doll affected the reward.");
-            quitToLobbyButton = config.Bind<bool>(Tweaks, nameof(quitToLobbyButton), true,
-                "TBA");
 #if FRIENDLYFIREHEALS
             friendlyFireHeals = config.Bind<bool>(Tweaks, nameof(friendlyFireHeals), false,
                 "TBA");
