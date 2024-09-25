@@ -29,6 +29,8 @@ namespace ServerSider
 
         public Config(ConfigFile config)
         {
+            file = config;
+
             const string Tweaks = "Tweaks";
             rescueShipPortal = config.Bind<bool>(Tweaks, nameof(rescueShipPortal), true,
                 "Spawn a portal in the Rescue Ship to allow looping after defeating Mithrix.");
