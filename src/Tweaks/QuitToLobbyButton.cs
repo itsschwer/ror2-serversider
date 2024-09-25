@@ -45,8 +45,9 @@ namespace ServerSider
 
         private static void PauseScreenController_Awake(PauseScreenController __instance)
         {
-            const string label = "Quit to Lobby";
+            const string label = "Quit to Lobby"; // Should capitalise "to" to match existing buttons, but I prefer title case
             GameObject obj = Object.Instantiate(__instance.exitGameButton, __instance.exitGameButton.transform.parent);
+            Object.DestroyImmediate(obj.GetComponent<LanguageTextMeshController>()); // Will override text (e.g. when returning from a submenu)
             obj.name = $"GenericMenuButton ({label})";
             obj.GetComponentInChildren<HGTextMeshProUGUI>().text = label;
             HGButton btn = obj.GetComponent<HGButton>();
