@@ -3,7 +3,9 @@
 A \[ server-side / host-only \] mod that adds small gameplay changes.
 
 ## compatibility
-This mod is compatible with the *Seekers of the Storm* update ***and*** earlier patches.
+This mod should be compatible with the *Seekers of the Storm* update ***and*** earlier patches.
+
+However, I don't have the energy to test on downpatched game versions *— please report any issues to the [GitHub repository](https://github.com/itsschwer/ror2-serversider/issues)!*
 
 ## gameplay changes
 
@@ -30,3 +32,9 @@ Name | Effect | Enabled by default?
 
 - [Artifactor](https://thunderstore.io/package/itsschwer/Artifactor/) <sup>[*src*](https://github.com/itsschwer/ror2-artifactor)</sup> — turns `rescueShipPortal` into an *Artifact*
 -->
+
+## todo
+- link to pressuredrop (mp-focused)
+- document `quitToLobbyButton`
+- find out why quitting to lobby doesn't destroy the pause menu automatically
+- rework tweak hooking logic (non-static, abstract base + a static container class?)
