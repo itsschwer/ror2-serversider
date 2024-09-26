@@ -31,8 +31,8 @@
 
         protected static string GetExecutingMethod(int index = 0)
         {
-            // +2 ∵ this method + method to check
-            var caller = new System.Diagnostics.StackTrace().GetFrame(index + 2).GetMethod();
+            // +3 ∵ this method + method to check + Enable/Disable (abstraction)
+            var caller = new System.Diagnostics.StackTrace().GetFrame(index + 3).GetMethod();
             return $"{caller.DeclaringType}::{caller.Name}";
         }
     }
