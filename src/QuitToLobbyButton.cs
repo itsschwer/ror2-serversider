@@ -1,6 +1,5 @@
 ﻿using BepInEx.Configuration;
-using Mono.Cecil.Cil;
-using MonoMod.Cil;
+using RoR2;
 using RoR2.UI;
 using UnityEngine;
 
@@ -11,7 +10,7 @@ namespace ServerSider
         public override bool allowed => Plugin.Enabled && quitToLobbyButton.Value;
         private readonly ConfigEntry<bool> quitToLobbyButton;
 
-        private static bool quitToLobbyClicked = false;
+        private const string commandName = $"{Plugin.Author}_run_end";
 
         internal QuitToLobbyButton(ConfigFile config)
         {
@@ -22,7 +21,6 @@ namespace ServerSider
         protected override void Hook()
         {
             On.RoR2.UI.PauseScreenController.Awake += PauseScreenController_Awake;
-            IL.RoR2.UI.PauseScreenController.Update += PauseScreenController_Update;
 
             Plugin.Logger.LogDebug($"{nameof(QuitToLobbyButton)}> Hooked by {GetExecutingMethod()}");
         }
@@ -30,7 +28,6 @@ namespace ServerSider
         protected override void Unhook()
         {
             On.RoR2.UI.PauseScreenController.Awake -= PauseScreenController_Awake;
-            IL.RoR2.UI.PauseScreenController.Update -= PauseScreenController_Update;
 
             Plugin.Logger.LogDebug($"{nameof(QuitToLobbyButton)}> Unhooked by {GetExecutingMethod()}");
         }
@@ -53,44 +50,17 @@ namespace ServerSider
             HGButton btn = obj.GetComponent<HGButton>();
             // [0] SubmitCmd | OptionsPanel(JUICED)(RoR2.ConsoleFunctions)
             //     quit_confirmed_command "quit"
-            btn.onClick.m_PersistentCalls.GetListener(0).arguments.stringArgument = "quit_confirmed_command \"run_end\"";
+            btn.onClick.m_PersistentCalls.GetListener(0).arguments.stringArgument = $"quit_confirmed_command \"{commandName}\"";
             // quitToLobbyClicked = true; // need to set thsi when the action is confirmed...
         }
 
-        private static void PauseScreenController_Update(ILContext il)
+        [ConCommand(commandName = commandName, flags = ConVarFlags.SenderMustBeServer)]
+        private static void CCRunEndUnpause(ConCommandArgs args)
         {
-            ILCursor c = new ILCursor(il);
+            Console.instance.RunCmd(LocalUserManager.GetFirstLocalUser(), "run_end", []);
+            if (PauseScreenController.instancesList.Count == 0) return;
 
-            System.Func<Instruction, bool>[] match = {
-                // if (!NetworkManager.singleton.isNetworkActive)
-                x => x.MatchLdsfld<UnityEngine.Networking.NetworkManager>(nameof(UnityEngine.Networking.NetworkManager.singleton)),
-                x => x.MatchLdfld<UnityEngine.Networking.NetworkManager>(nameof(UnityEngine.Networking.NetworkManager.isNetworkActive)),
-                x => x.MatchBrtrue(out _),
-                // Object.Destroy(base.gameObject)
-                x => x.MatchLdarg(0),
-                x => x.MatchCallOrCallvirt<UnityEngine.GameObject>("get_" + nameof(UnityEngine.GameObject.gameObject)),
-                x => x.MatchCallOrCallvirt<UnityEngine.Object>(nameof(UnityEngine.Object.Destroy))
-            };
-
-            if (c.TryGotoNext(MoveType.After, match)) {
-                c.Emit(OpCodes.Ldarg_0);
-                c.EmitDelegate<System.Action<GameObject>>((pauseScreenControllerObject) => {
-                    if (UnityEngine.Networking.NetworkManager.singleton.isNetworkActive) {
-                        Object.Destroy(pauseScreenControllerObject);
-                    }
-                });
-            }
-            else Plugin.Logger.LogError($"{nameof(QuitToLobbyButton)}> Cannot add hook to destroy pause menu: failed to match IL instructions.");
-
-            Plugin.Logger.LogDebug(il.ToString());
+            Object.Destroy(PauseScreenController.instancesList[0].gameObject);
         }
-
-#if DEBUG
-        [HarmonyLib.HarmonyPostfix, HarmonyLib.HarmonyPatch(typeof(PauseScreenController), nameof(PauseScreenController.OnDisable))]
-        private static void PauseScreenController_OnDisable()
-        {
-            Plugin.Logger.LogInfo(new System.Diagnostics.StackTrace());
-        }
-#endif
     }
 }

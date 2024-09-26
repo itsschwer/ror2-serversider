@@ -9,6 +9,7 @@ namespace ServerSider
         public readonly RescueShipLoopPortal RescueShipLoopPortal;
         public readonly VoidFieldFogTweak VoidFieldFogTweak;
         public readonly ChanceDollMessage ChanceDollMessage;
+        public readonly QuitToLobbyButton QuitToLobbyButton;
 
         internal TweakManager(BepInEx.Configuration.ConfigFile config)
         {
@@ -22,6 +23,9 @@ namespace ServerSider
 
             ChanceDollMessage = new ChanceDollMessage(config);
             managedTweaks.Add(ChanceDollMessage);
+
+            QuitToLobbyButton = new QuitToLobbyButton(config);
+            managedTweaks.Add(QuitToLobbyButton);
         }
 
         internal void Refresh()
