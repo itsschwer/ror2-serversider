@@ -13,12 +13,10 @@ namespace ServerSider
 
         internal static new BepInEx.Logging.ManualLogSource Logger { get; private set; }
 
-        public static new Config Config { get; private set; }
+        public static TweakManager Tweaks { get; private set; }
 
         private static Plugin Instance;
         internal static bool Enabled => Instance.enabled;
-
-        private event System.Action OnEnabledStatusChange;
 
 
         private void Awake()
@@ -27,7 +25,7 @@ namespace ServerSider
             BepInEx.Logging.Logger.Sources.Remove(base.Logger);
             Logger = BepInEx.Logging.Logger.CreateLogSource(Plugin.GUID);
 
-            Config = new Config(base.Config);
+            Tweaks = new TweakManager(Config);
 
             Instance = this;
             // Use run start/end events to run check for if plugin should be active
@@ -35,20 +33,21 @@ namespace ServerSider
             Run.onRunDestroyGlobal += SetPluginActiveState;
             SetPluginActiveState();
 
-            SetupHooks();
-
             Logger.LogMessage("~awake.");
         }
 
         private void OnEnable()
         {
-            OnEnabledStatusChange?.Invoke();
+            Logger.LogDebug($"Reloading {Config.ConfigFilePath.Substring(Config.ConfigFilePath.LastIndexOf(System.IO.Path.DirectorySeparatorChar) + 1)}");
+            Config.Reload();
+
+            Tweaks.Refresh();
             Logger.LogMessage("~enabled.");
         }
 
         private void OnDisable()
         {
-            OnEnabledStatusChange?.Invoke();
+            Tweaks.Refresh();
             Logger.LogMessage("~disabled.");
         }
 
@@ -67,28 +66,6 @@ namespace ServerSider
         {
             this.enabled = value;
             Logger.LogMessage($"~{(value ? "active" : "inactive")}.");
-        }
-
-        private void SetupHooks()
-        {
-            OnEnabledStatusChange += RescueShipLoopPortal.ManageHook;
-            OnEnabledStatusChange += VoidFieldFogTweak.ManageHook;
-            OnEnabledStatusChange += ChanceDollMessage.ManageHook;
-#if FRIENDLYFIREHEALS
-            OnManageHooks += FriendlyFireHeals.ManageHook;
-#endif
-        }
-
-        public static void UnmanageHook(System.Action manageHookMethod)
-        {
-            Instance.OnEnabledStatusChange -= manageHookMethod;
-        }
-
-        internal static string GetExecutingMethod(int index = 0)
-        {
-            // +2 ∵ this method + method to check
-            var caller = new System.Diagnostics.StackTrace().GetFrame(index + 2).GetMethod();
-            return $"{caller.DeclaringType}::{caller.Name}";
         }
 
 

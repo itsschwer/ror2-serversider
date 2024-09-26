@@ -1,43 +1,35 @@
-﻿using RoR2;
+﻿using BepInEx.Configuration;
+using RoR2;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.Networking;
 
 namespace ServerSider
 {
-    public static class RescueShipLoopPortal
+    public class RescueShipLoopPortal : TweakBase
     {
-        private static bool _hooked = false;
+        public override bool allowed => Plugin.Enabled && rescueShipPortal.Value;
+        private readonly ConfigEntry<bool> rescueShipPortal;
 
-        public static void Hook()
+        internal RescueShipLoopPortal(ConfigFile config)
         {
-            if (_hooked) return;
-            _hooked = true;
+            rescueShipPortal = config.Bind<bool>("Tweaks", nameof(rescueShipPortal), true,
+                "Spawn a portal in the Rescue Ship to allow looping after defeating Mithrix.");
+        }
 
+        protected override void Hook()
+        {
             On.RoR2.HoldoutZoneController.Start += HoldoutZoneController_Start;
 
-            Plugin.Logger.LogDebug($"{nameof(RescueShipLoopPortal)}> Hooked by {Plugin.GetExecutingMethod()}");
+            Plugin.Logger.LogDebug($"{nameof(RescueShipLoopPortal)}> Hooked by {GetExecutingMethod()}");
         }
 
-        public static void Unhook()
+        protected override void Unhook()
         {
-            if (!_hooked) return;
-            _hooked = false;
-
             On.RoR2.HoldoutZoneController.Start -= HoldoutZoneController_Start;
 
-            Plugin.Logger.LogDebug($"{nameof(RescueShipLoopPortal)}> Unhooked by {Plugin.GetExecutingMethod()}");
+            Plugin.Logger.LogDebug($"{nameof(RescueShipLoopPortal)}> Unhooked by {GetExecutingMethod()}");
         }
-
-        public static void Rehook(bool condition)
-        {
-            Unhook();
-            if (condition) Hook();
-
-            Plugin.Logger.LogDebug($"{nameof(RescueShipLoopPortal)}> Rehooked by {Plugin.GetExecutingMethod()}");
-        }
-
-        public static void ManageHook() => Rehook(Plugin.Enabled && Plugin.Config.RescueShipPortal);
 
 
         // Functionality ===================================
@@ -72,7 +64,7 @@ namespace ServerSider
 #endif
             NetworkServer.Spawn(gameObject);
 
-            Chat.SendBroadcastChat(new Chat.SimpleChatMessage { baseToken = $"<size=120%><style=cIsVoid>The Void beckons...</style></size>" });
+            Chat.SendBroadcastChat(new Chat.SimpleChatMessage { baseToken = $"<size=120%><style=cIsVoid>The Void calls...</style></size>" });
         }
     }
 }

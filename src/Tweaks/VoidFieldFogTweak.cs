@@ -1,42 +1,34 @@
-﻿using RoR2;
+﻿using BepInEx.Configuration;
+using RoR2;
 
 namespace ServerSider
 {
-    public static class VoidFieldFogTweak
+    public class VoidFieldFogTweak : TweakBase
     {
-        private static bool _hooked = false;
+        public override bool allowed => Plugin.Enabled && voidFieldFogAltStart.Value;
+        private readonly ConfigEntry<bool> voidFieldFogAltStart;
 
-        public static void Hook()
+        internal VoidFieldFogTweak(ConfigFile config)
         {
-            if (_hooked) return;
-            _hooked = true;
+            voidFieldFogAltStart = config.Bind<bool>("Tweaks", nameof(voidFieldFogAltStart), false,
+                "Change the Void Fields fog to only become active once a Cell Vent has been activated.");
+        }
 
+        protected override void Hook()
+        {
             On.RoR2.ArenaMissionController.OnStartServer += ArenaMissionController_OnStartServer;
             On.RoR2.ArenaMissionController.BeginRound += ArenaMissionController_BeginRound;
 
-            Plugin.Logger.LogDebug($"{nameof(VoidFieldFogTweak)}> Hooked by {Plugin.GetExecutingMethod()}");
+            Plugin.Logger.LogDebug($"{nameof(VoidFieldFogTweak)}> Hooked by {GetExecutingMethod()}");
         }
 
-        public static void Unhook()
+        protected override void Unhook()
         {
-            if (!_hooked) return;
-            _hooked = false;
-
             On.RoR2.ArenaMissionController.OnStartServer -= ArenaMissionController_OnStartServer;
             On.RoR2.ArenaMissionController.BeginRound -= ArenaMissionController_BeginRound;
 
-            Plugin.Logger.LogDebug($"{nameof(VoidFieldFogTweak)}> Unhooked by {Plugin.GetExecutingMethod()}");
+            Plugin.Logger.LogDebug($"{nameof(VoidFieldFogTweak)}> Unhooked by {GetExecutingMethod()}");
         }
-
-        public static void Rehook(bool condition)
-        {
-            Unhook();
-            if (condition) Hook();
-
-            Plugin.Logger.LogDebug($"{nameof(VoidFieldFogTweak)}> Rehooked by {Plugin.GetExecutingMethod()}");
-        }
-
-        public static void ManageHook() => Rehook(Plugin.Enabled && Plugin.Config.VoidFieldFogAltStart);
 
 
         // Functionality ===================================
@@ -44,16 +36,16 @@ namespace ServerSider
         private static void ArenaMissionController_OnStartServer(On.RoR2.ArenaMissionController.orig_OnStartServer orig, ArenaMissionController self)
         {
             orig(self);
-            self.SetFogActive(false);
+            SetFogActive(self, false);
         }
 
         private static void ArenaMissionController_BeginRound(On.RoR2.ArenaMissionController.orig_BeginRound orig, ArenaMissionController self)
         {
             orig(self);
-            if (self.currentRound == 1) self.SetFogActive(true);
+            if (self.currentRound == 1) SetFogActive(self, true);
         }
 
-        private static void SetFogActive(this ArenaMissionController controller, bool value)
+        private static void SetFogActive(ArenaMissionController controller, bool value)
         {
 #if DEBUG
             Chat.SendBroadcastChat(new Chat.SimpleChatMessage { baseToken = $"<style=cIsUtility>[Arena Fog] {(value ? "active" : "inactive")}</style>" });

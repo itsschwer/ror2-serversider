@@ -1,4 +1,5 @@
-﻿using Mono.Cecil.Cil;
+﻿using BepInEx.Configuration;
+using Mono.Cecil.Cil;
 using MonoMod.Cil;
 using RoR2;
 using System;
@@ -6,17 +7,21 @@ using System.Reflection;
 
 namespace ServerSider
 {
-    public static class ChanceDollMessage
+    public class ChanceDollMessage : TweakBase
     {
-        private static bool _hooked = false;
+        public override bool allowed => Plugin.Enabled && chanceDollMessage.Value;
+        private readonly ConfigEntry<bool> chanceDollMessage;
 
-        private static FieldInfo chanceDollWin = typeof(RoR2.ShrineChanceBehavior).GetField(nameof(chanceDollWin), BindingFlags.Instance | BindingFlags.NonPublic);
+        private static readonly FieldInfo chanceDollWin = typeof(ShrineChanceBehavior).GetField(nameof(chanceDollWin), BindingFlags.Instance | BindingFlags.NonPublic);
 
-        public static void Hook()
+        internal ChanceDollMessage(ConfigFile config)
         {
-            if (_hooked) return;
-            _hooked = true;
+            chanceDollMessage = config.Bind<bool>("Tweaks", nameof(chanceDollMessage), true,
+                "Reword the Shrine of Chance success message to indicate if a Chance Doll affected the reward.");
+        }
 
+        protected override void Hook()
+        {
             if (chanceDollWin == null) {
                 Plugin.Logger.LogWarning($"{nameof(ChanceDollMessage)}> Cannot hook: no {nameof(chanceDollWin)} field.");
                 return;
@@ -24,28 +29,15 @@ namespace ServerSider
 
             IL.RoR2.ShrineChanceBehavior.AddShrineStack += ShrineChanceBehavior_AddShrineStack;
 
-            Plugin.Logger.LogDebug($"{nameof(ChanceDollMessage)}> Hooked by {Plugin.GetExecutingMethod()}");
+            Plugin.Logger.LogDebug($"{nameof(ChanceDollMessage)}> Hooked by {GetExecutingMethod()}");
         }
 
-        public static void Unhook()
+        protected override void Unhook()
         {
-            if (!_hooked) return;
-            _hooked = false;
-
             IL.RoR2.ShrineChanceBehavior.AddShrineStack -= ShrineChanceBehavior_AddShrineStack;
 
-            Plugin.Logger.LogDebug($"{nameof(ChanceDollMessage)}> Unhooked by {Plugin.GetExecutingMethod()}");
+            Plugin.Logger.LogDebug($"{nameof(ChanceDollMessage)}> Unhooked by {GetExecutingMethod()}");
         }
-
-        public static void Rehook(bool condition)
-        {
-            Unhook();
-            if (condition) Hook();
-
-            Plugin.Logger.LogDebug($"{nameof(ChanceDollMessage)}> Rehooked by {Plugin.GetExecutingMethod()}");
-        }
-
-        public static void ManageHook() => Rehook(Plugin.Enabled && Plugin.Config.ChanceDollMessage);
 
         // Functionality ===============================
 

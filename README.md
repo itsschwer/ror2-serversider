@@ -35,4 +35,3 @@ Name | Effect | Enabled by default?
 
 ## todo
 - link to pressuredrop (mp-focused)
-- rework tweak hooking logic (non-static, abstract base + a static container class?)
