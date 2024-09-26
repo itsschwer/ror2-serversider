@@ -1,3 +1,8 @@
+- Add `exitToLobbyButton`
+- Fix `chanceDollMessage` erroneously using `rescueShipPortal` configuration option
+- Reword the `rescueShipPortal` prompt to differentiate from the *Green Portal (Seekers of the Storm)* prompt
+- Rewrite how hooks and configuration options are managed
+
 # 1.1.0
 - Add `chanceDollMessage`
 - Update icon
