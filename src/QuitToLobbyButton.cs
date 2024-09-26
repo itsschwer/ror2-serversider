@@ -3,6 +3,8 @@ using RoR2;
 using RoR2.UI;
 using UnityEngine;
 
+[assembly: HG.Reflection.SearchableAttribute.OptIn]
+
 namespace ServerSider
 {
     public class QuitToLobbyButton : TweakBase
