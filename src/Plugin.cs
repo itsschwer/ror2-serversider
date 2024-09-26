@@ -55,6 +55,9 @@ namespace ServerSider
         /// Wrapper for <see cref="SetActive"/>, passing in <see cref="UnityEngine.Networking.NetworkServer.active"/>,
         /// which appears to be used for determining if client is host.
         /// </summary>
+        /// <remarks>
+        /// Persists on run end as the network server stays active.
+        /// </remarks>
         private void SetPluginActiveState(Run _ = null) => SetActive(UnityEngine.Networking.NetworkServer.active);
 
         /// <summary>

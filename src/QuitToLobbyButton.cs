@@ -39,7 +39,10 @@ namespace ServerSider
         private static void PauseScreenController_Awake(On.RoR2.UI.PauseScreenController.orig_Awake orig, PauseScreenController self)
         {
             orig(self);
-            PauseScreenController_Awake(self);
+
+            if (Run.instance != null) {
+                PauseScreenController_Awake(self);
+            }
         }
 
         private static void PauseScreenController_Awake(PauseScreenController __instance)
