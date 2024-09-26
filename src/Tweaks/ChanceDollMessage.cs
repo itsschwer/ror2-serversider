@@ -56,9 +56,7 @@ namespace ServerSider
                 x => x.MatchCallOrCallvirt(typeof(Chat), nameof(Chat.SendBroadcastChat))
             };
 
-            bool matched = c.TryGotoNext(match);
-
-            if (matched) {
+            if (c.TryGotoNext(match)) {
                 ILLabel originalBroadcast = c.MarkLabel();
                 // if (chanceDollWin)
                 c.Emit(OpCodes.Ldarg_0);
