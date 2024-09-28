@@ -17,7 +17,7 @@ namespace ServerSider
         internal QuitToLobbyButton(ConfigFile config)
         {
             quitToLobbyButton = config.Bind<bool>("Tweaks", nameof(quitToLobbyButton), true,
-                "TODO");
+                "Add a \"Quit to Lobby\" button to the Run pause menu.\n\nUseful in multiplayer for changing characters/survivors, difficulty, or artifacts without disconnecting everyone from the lobby.");
         }
 
         protected override void Hook()

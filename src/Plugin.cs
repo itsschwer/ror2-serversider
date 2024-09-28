@@ -13,6 +13,9 @@ namespace ServerSider
 
         internal static new BepInEx.Logging.ManualLogSource Logger { get; private set; }
 
+        /// <summary>
+        /// Manager for the collection of tweaks introduced by this mod.
+        /// </summary>
         public static TweakManager Tweaks { get; private set; }
 
         private static Plugin Instance;
@@ -38,7 +41,7 @@ namespace ServerSider
 
         private void OnEnable()
         {
-            Logger.LogDebug($"Reloading {Config.ConfigFilePath.Substring(Config.ConfigFilePath.LastIndexOf(System.IO.Path.DirectorySeparatorChar) + 1)}");
+            Logger.LogMessage($"Reloading {Config.ConfigFilePath.Substring(Config.ConfigFilePath.LastIndexOf(System.IO.Path.DirectorySeparatorChar) + 1)}");
             Config.Reload();
 
             Tweaks.Refresh();

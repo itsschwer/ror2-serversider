@@ -17,7 +17,8 @@ Name | Effect | Enabled by default?
 ---    | ---    | ---
 `rescueShipPortal` | Spawns a portal inside the *Rescue Ship* to allow looping after defeating *Mithrix*  | `true`
 `voidFieldFogAltStart` | Changes the *Void Fields*' fog to only become active once a *Cell Vent* has been activated *(rather than on entry)* | `false`
-`chanceDollMessage` | Reword the *Shrine of Chance* success message to indicate if a *Chance Doll* affected the reward | `true`
+`chanceDollMessage` | Rewords the *Shrine of Chance* success message to indicate if a *Chance Doll* affected the reward | `true`
+`quitToLobbyButton` | Adds a "Quit to Lobby" button to the Run pause menu. <br/><br/> Useful in multiplayer for changing characters/survivors, difficulty, or artifacts without disconnecting everyone from the lobby. | `true`
 
 ## screenshots
 

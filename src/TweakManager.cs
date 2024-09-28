@@ -4,7 +4,14 @@ namespace ServerSider
 {
     public class TweakManager
     {
-        public List<TweakBase> managedTweaks;
+        /// <summary>
+        /// The list of tweaks that this mod manages the hooks for.
+        /// </summary>
+        /// <remarks>
+        /// Remove a tweak from this list if you plan on taking over its hook management
+        /// (e.g. turning a tweak into an Artifact).
+        /// </remarks>
+        public readonly List<TweakBase> managedTweaks;
 
         public readonly RescueShipLoopPortal RescueShipLoopPortal;
         public readonly VoidFieldFogTweak VoidFieldFogTweak;
