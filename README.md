@@ -9,7 +9,7 @@ However, I don't have the energy to test on downpatched game versions *— pleas
 
 ## gameplay changes
 
-> The configuration file is automatically reloaded at the start (and end) of each run.
+> The configuration file is automatically reloaded at the start of each run.
 >
 > *[***OptionGenerator***](https://thunderstore.io/package/6thmoon/OptionGenerator/) *(+[***Risk Of Options***](https://thunderstore.io/package/Rune580/Risk_Of_Options/))* can be used to change the configuration in-game, rather than editing the file or using **r2modman**.*
 
