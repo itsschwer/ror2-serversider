@@ -3,7 +3,7 @@
 	"name": "ServerSider",
 	"version_number": "1.1.0",
 	"website_url": "https://github.com/itsschwer/ror2-serversider",
-	"description": "Spawns a portal inside the Rescue Ship to allow looping after defeating Mithrix (and other small gameplay changes; check the README!) — [ server-side ]",
+	"description": "Spawns a portal inside the Rescue Ship to allow looping after defeating Mithrix; Quit to Lobby button; and other small gameplay changes (check the README!) — [ server-side ]",
 	"dependencies": [
 		"bbepis-BepInExPack-5.4.2113",
 		"RiskofThunder-HookGenPatcher-1.2.3"

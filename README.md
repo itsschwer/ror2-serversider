@@ -28,11 +28,13 @@ Name | Effect | Enabled by default?
 ### `chanceDollMessage`
 ![chance doll message sample screenshot](https://github.com/itsschwer/ror2-serversider/blob/main/xtra/demo-chance-doll-message.png?raw=true)
 
-<!--
+### `quitToLobbyButton`
+![quit to lobby button sample screenshot](https://github.com/itsschwer/ror2-serversider/blob/main/xtra/demo-quit-to-lobby-button.png?raw=true)
+
 ## see also
 
+- [PressureDrop](https://thunderstore.io/package/itsschwer/PressureDrop/) — my initial server-side mod, geared towards "friendlier multiplayer" *(but perfectly usable for singleplayer too)*
+
+<!--
 - [Artifactor](https://thunderstore.io/package/itsschwer/Artifactor/) <sup>[*src*](https://github.com/itsschwer/ror2-artifactor)</sup> — turns `rescueShipPortal` into an *Artifact*
 -->
-
-## todo
-- link to pressuredrop (mp-focused)
