@@ -1,7 +1,7 @@
 ﻿{
 	"author": "itsschwer",
 	"name": "ServerSider",
-	"version_number": "1.1.0",
+	"version_number": "1.2.0",
 	"website_url": "https://github.com/itsschwer/ror2-serversider",
 	"description": "Spawns a portal inside the Rescue Ship to allow looping after defeating Mithrix; Quit to Lobby button; and other small gameplay changes (check the README!) — [ server-side ]",
 	"dependencies": [
