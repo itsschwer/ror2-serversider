@@ -33,7 +33,7 @@ namespace ServerSider
             Instance = this;
             // Use run start/end events to run check for if plugin should be active
             Run.onRunStartGlobal += SetPluginActiveState;
-            Run.onRunDestroyGlobal += SetPluginActiveState;
+            Run.onRunDestroyGlobal += Disable;
             SetPluginActiveState();
 
             Logger.LogMessage("~awake.");
@@ -73,6 +73,8 @@ namespace ServerSider
             this.enabled = value;
             Logger.LogMessage($"~{(value ? "active" : "inactive")}.");
         }
+
+        private void Disable(Run _) => SetActive(false);
 
 
 #if DEBUG
