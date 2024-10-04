@@ -73,15 +73,12 @@ namespace ServerSider
             orig(self, other);
 
             if (self.zoneType == MapZone.ZoneType.OutOfBounds) {
-#if DEBUG || true
-                Plugin.Logger.LogDebug($"{nameof(MapZone_TryZoneStart)}> {self.gameObject.name}");
-#endif
                 // Try teleport to spawn location
                 if (other.TryGetComponent<OutOfBoundsPickupHelper>(out var helper)) {
                     Vector3 position = helper.origin;
                     TeleportHelper.TeleportGameObject(other.gameObject, position);
                     Object.Destroy(helper);
-                    Plugin.Logger.LogDebug($"{nameof(TeleportOutOfBoundsPickups)}> Teleported pickup to {position}.");
+                    Plugin.Logger.LogDebug($"{nameof(TeleportOutOfBoundsPickups)}> Teleported pickup to {position} [entered {self.gameObject.name}].");
                 }
                 // Fallback to nearest node
                 else {
@@ -98,8 +95,8 @@ namespace ServerSider
                             Vector3 position = target.transform.position;
                             TeleportHelper.TeleportGameObject(other.gameObject, position);
                             Object.Destroy(target);
-                            Plugin.Logger.LogDebug($"{nameof(TeleportOutOfBoundsPickups)}> Teleported pickup to {position} {{ {nameof(hasPickupDropletController)}: {hasPickupDropletController}, {nameof(hasGenericPickupController)}: {hasGenericPickupController} }}.");
-                        } else Plugin.Logger.LogDebug($"{nameof(TeleportOutOfBoundsPickups)}> Failed to find a node to teleport to.");
+                            Plugin.Logger.LogDebug($"{nameof(TeleportOutOfBoundsPickups)}> Teleported pickup to {position} [entered {self.gameObject.name}] {{ {nameof(hasPickupDropletController)}: {hasPickupDropletController}, {nameof(hasGenericPickupController)}: {hasGenericPickupController} }}.");
+                        } else Plugin.Logger.LogDebug($"{nameof(TeleportOutOfBoundsPickups)}> Failed to find a node to teleport to [entered {self.gameObject.name}].");
                     }
                 }
             }
@@ -109,18 +106,9 @@ namespace ServerSider
         {
             public Vector3 origin { get; private set; }
 
-            private void Start()
+            private void OnEnable()
             {
                 origin = transform.position;
-                Collider collider = GetComponent<Collider>();
-                foreach (MapZone zone in InstanceTracker.GetInstancesList<MapZone>()) {
-                    if (zone.zoneType == MapZone.ZoneType.OutOfBounds) {
-#if DEBUG || true
-                        Plugin.Logger.LogDebug($"{nameof(OutOfBoundsPickupHelper)}> {zone.gameObject.name} | {LayerMask.LayerToName(zone.gameObject.layer)} | {zone.collider.isTrigger}");
-#endif
-                        // Physics.IgnoreCollision(collider, zone.collider, false);
-                    }
-                }
             }
         }
     }
