@@ -1,3 +1,5 @@
+- Add `teleportOutOfBoundsPickups`
+
 # 1.2.0
 - Add `exitToLobbyButton`
 - Fix `chanceDollMessage` erroneously using the `rescueShipPortal` configuration option

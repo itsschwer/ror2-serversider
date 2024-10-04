@@ -17,6 +17,7 @@ namespace ServerSider
         public readonly VoidFieldFogTweak VoidFieldFogTweak;
         public readonly ChanceDollMessage ChanceDollMessage;
         public readonly QuitToLobbyButton QuitToLobbyButton;
+        public readonly TeleportOutOfBoundsPickups TeleportOutOfBoundsPickups;
 
         internal TweakManager(BepInEx.Configuration.ConfigFile config)
         {
@@ -33,6 +34,9 @@ namespace ServerSider
 
             QuitToLobbyButton = new QuitToLobbyButton(config);
             managedTweaks.Add(QuitToLobbyButton);
+
+            TeleportOutOfBoundsPickups = new TeleportOutOfBoundsPickups(config);
+            managedTweaks.Add(TeleportOutOfBoundsPickups);
         }
 
         internal void Refresh()
