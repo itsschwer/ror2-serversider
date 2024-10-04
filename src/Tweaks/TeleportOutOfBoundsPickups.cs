@@ -77,6 +77,9 @@ namespace ServerSider
                 if (other.TryGetComponent<OutOfBoundsPickupHelper>(out var helper)) {
                     Vector3 position = helper.origin;
                     TeleportHelper.TeleportGameObject(other.gameObject, position);
+                    if (other.attachedRigidbody) {
+                        other.attachedRigidbody.velocity = Vector3.zero;
+                    }
                     Object.Destroy(helper);
                     Plugin.Logger.LogDebug($"{nameof(TeleportOutOfBoundsPickups)}> Teleported pickup to {position} [entered {self.gameObject.name}].");
                 }
@@ -94,6 +97,9 @@ namespace ServerSider
                         if (target != null) {
                             Vector3 position = target.transform.position;
                             TeleportHelper.TeleportGameObject(other.gameObject, position);
+                            if (other.attachedRigidbody) {
+                                other.attachedRigidbody.velocity = Vector3.zero;
+                            }
                             Object.Destroy(target);
                             Plugin.Logger.LogDebug($"{nameof(TeleportOutOfBoundsPickups)}> Teleported pickup to {position} [entered {self.gameObject.name}] {{ {nameof(hasPickupDropletController)}: {hasPickupDropletController}, {nameof(hasGenericPickupController)}: {hasGenericPickupController} }}.");
                         } else Plugin.Logger.LogDebug($"{nameof(TeleportOutOfBoundsPickups)}> Failed to find a node to teleport to [entered {self.gameObject.name}].");
