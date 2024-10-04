@@ -56,7 +56,6 @@ namespace ServerSider
             // [0] SubmitCmd | OptionsPanel(JUICED)(RoR2.ConsoleFunctions)
             //     quit_confirmed_command "quit"
             btn.onClick.m_PersistentCalls.GetListener(0).arguments.stringArgument = $"quit_confirmed_command \"{commandName}\"";
-            // quitToLobbyClicked = true; // need to set thsi when the action is confirmed...
         }
 
         [ConCommand(commandName = commandName, flags = ConVarFlags.SenderMustBeServer)]
@@ -64,7 +63,8 @@ namespace ServerSider
         {
             Console.instance.RunCmd(LocalUserManager.GetFirstLocalUser(), "run_end", []);
             if (PauseScreenController.instancesList.Count == 0) return;
-
+            // Normally PauseScreenController destroys its gameObject if !NetworkManager.singleton.isNetworkActive (see RoR2.UI.PauseScreenController.Update)
+            // but this condition is false when in the lobby.
             Object.Destroy(PauseScreenController.instancesList[0].gameObject);
         }
     }
