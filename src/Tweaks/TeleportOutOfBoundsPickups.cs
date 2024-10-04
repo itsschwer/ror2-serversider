@@ -85,9 +85,10 @@ namespace ServerSider
                 }
                 // Fallback to nearest node
                 else {
-                    bool hasPickupDropletController = other.TryGetComponent<PickupDropletController>(out _);
-                    bool hasGenericPickupController = other.TryGetComponent<GenericPickupController>(out _);
-                    if (hasPickupDropletController || hasGenericPickupController) {
+                    bool hasPickupDropletController = other.TryGetComponent<PickupDropletController>(out _); // Droplet form
+                    bool hasGenericPickupController = other.TryGetComponent<GenericPickupController>(out _); // Tangible form
+                    bool hasPickupPickerController = other.TryGetComponent<PickupPickerController>(out _);   // Command cube form
+                    if (hasPickupDropletController || hasGenericPickupController || hasPickupPickerController) {
                         // Logic from RoR2.Run.FindSafeTeleportPosition
                         GameObject target = DirectorCore.instance.TrySpawnObject(new DirectorSpawnRequest(scTeleportHelper,
                             new DirectorPlacementRule {
@@ -101,7 +102,7 @@ namespace ServerSider
                                 other.attachedRigidbody.velocity = Vector3.zero;
                             }
                             Object.Destroy(target);
-                            Plugin.Logger.LogDebug($"{nameof(TeleportOutOfBoundsPickups)}> Teleported pickup to {position} [entered {self.gameObject.name}] {{ {nameof(hasPickupDropletController)}: {hasPickupDropletController}, {nameof(hasGenericPickupController)}: {hasGenericPickupController} }}.");
+                            Plugin.Logger.LogDebug($"{nameof(TeleportOutOfBoundsPickups)}> Teleported pickup to {position} [entered {self.gameObject.name}] {{ {nameof(hasPickupDropletController)}: {hasPickupDropletController}, {nameof(hasGenericPickupController)}: {hasGenericPickupController}, {nameof(hasPickupPickerController)}: {hasPickupPickerController} }}.");
                         } else Plugin.Logger.LogDebug($"{nameof(TeleportOutOfBoundsPickups)}> Failed to find a node to teleport to [entered {self.gameObject.name}].");
                     }
                 }
