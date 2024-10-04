@@ -95,7 +95,7 @@ namespace ServerSider
                                 position = other.transform.position
                             }, RoR2Application.rng));
                         if (target != null) {
-                            Vector3 position = target.transform.position;
+                            Vector3 position = target.transform.position + (Vector3.up * other.bounds.extents.y);
                             TeleportHelper.TeleportGameObject(other.gameObject, position);
                             if (other.attachedRigidbody) {
                                 other.attachedRigidbody.velocity = Vector3.zero;
