@@ -1,3 +1,4 @@
+# 1.3.0
 - Add `teleportOutOfBoundsPickups`
 
 # 1.2.0

@@ -35,6 +35,12 @@ Name | Effect | Enabled by default?
 ## see also
 
 - [PressureDrop](https://thunderstore.io/package/itsschwer/PressureDrop/) — my initial server-side mod, geared towards "friendlier multiplayer" *(but perfectly usable for singleplayer too)*
+<!-- -->
+- [QuickRestart](https://thunderstore.io/package/AceOfShades/QuickRestart/) <sup>[*src*](https://github.com/Maceris/quick-restart)</sup> by [AceOfShades](https://thunderstore.io/package/AceOfShades/) — alternative implementation of `quitToLobbyButton`
+    - uses custom UX
+    - also has a "restart" button to start a new run without returning to the lobby
+- [OutOfBoundsItemsFix](https://thunderstore.io/package/rob_gaming/OutOfBoundsItemsFix/) by [rob_gaming](https://thunderstore.io/package/rob_gaming/) — alternative implementation of `teleportOutOfBoundsPickups`
+    - based on fall distance rather than out of bounds map zones
 
 <!--
 - [Artifactor](https://thunderstore.io/package/itsschwer/Artifactor/) <sup>[*src*](https://github.com/itsschwer/ror2-artifactor)</sup> — turns `rescueShipPortal` into an *Artifact*
