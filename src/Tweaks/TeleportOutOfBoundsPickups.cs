@@ -9,6 +9,7 @@ namespace ServerSider
         public override bool allowed => Plugin.Enabled && teleportOutOfBoundsPickups.Value;
         private readonly ConfigEntry<bool> teleportOutOfBoundsPickups;
 
+        private bool vanillaIgnoreLayerCollision;
         private static SpawnCard _scTeleportHelper;
         private static SpawnCard scTeleportHelper {
             get {
@@ -32,40 +33,93 @@ namespace ServerSider
 
         protected override void Hook()
         {
+            vanillaIgnoreLayerCollision = Physics.GetIgnoreLayerCollision(LayerMask.NameToLayer("CollideWithCharacterHullOnly"), PickupDropletController.pickupDropletPrefab.layer);
+            Physics.IgnoreLayerCollision(LayerMask.NameToLayer("CollideWithCharacterHullOnly"), PickupDropletController.pickupDropletPrefab.layer, false);
+
             On.RoR2.MapZone.TryZoneStart += MapZone_TryZoneStart;
+            On.RoR2.PickupDropletController.Start += PickupDropletController_Start;
+            On.RoR2.GenericPickupController.Start += GenericPickupController_Start;
 
             Plugin.Logger.LogDebug($"{nameof(TeleportOutOfBoundsPickups)}> Hooked by {GetExecutingMethod()}");
         }
 
         protected override void Unhook()
         {
+            Physics.IgnoreLayerCollision(LayerMask.NameToLayer("CollideWithCharacterHullOnly"), PickupDropletController.pickupDropletPrefab.layer, vanillaIgnoreLayerCollision);
+
             On.RoR2.MapZone.TryZoneStart -= MapZone_TryZoneStart;
+            On.RoR2.PickupDropletController.Start -= PickupDropletController_Start;
+            On.RoR2.GenericPickupController.Start -= GenericPickupController_Start;
 
             Plugin.Logger.LogDebug($"{nameof(TeleportOutOfBoundsPickups)}> Unhooked by {GetExecutingMethod()}");
         }
 
         // Functionality ===============================
 
+        private void GenericPickupController_Start(On.RoR2.GenericPickupController.orig_Start orig, GenericPickupController self)
+        {
+            orig(self);
+            self.gameObject.AddComponent<OutOfBoundsPickupHelper>();
+        }
+
+        private void PickupDropletController_Start(On.RoR2.PickupDropletController.orig_Start orig, PickupDropletController self)
+        {
+            orig(self);
+            self.gameObject.AddComponent<OutOfBoundsPickupHelper>();
+        }
+
         private static void MapZone_TryZoneStart(On.RoR2.MapZone.orig_TryZoneStart orig, MapZone self, Collider other)
         {
             orig(self, other);
 
             if (self.zoneType == MapZone.ZoneType.OutOfBounds) {
-                //todo: determine if it is possible to try teleport to try teleport to the spawn location (PickupDropletController?) before defaulting to the nearest node
-                bool hasPickupDropletController = other.TryGetComponent<PickupDropletController>(out _);
-                bool hasGenericPickupController = other.TryGetComponent<GenericPickupController>(out _);
-                if (hasPickupDropletController || hasGenericPickupController) {
-                    // Logic from RoR2.Run.FindSafeTeleportPosition
-                    GameObject target = DirectorCore.instance.TrySpawnObject(new DirectorSpawnRequest(scTeleportHelper,
-                        new DirectorPlacementRule {
-                            placementMode = DirectorPlacementRule.PlacementMode.NearestNode,
-                            position = other.transform.position
-                        }, RoR2Application.rng));
-                    if (target != null) {
-                        TeleportHelper.TeleportGameObject(other.gameObject, target.transform.position);
-                        Object.Destroy(target);
-                        Plugin.Logger.LogDebug($"{nameof(TeleportOutOfBoundsPickups)}> Teleported pickup {{ {nameof(hasPickupDropletController)}: {hasPickupDropletController}, {nameof(hasGenericPickupController)}: {hasGenericPickupController} }}.");
-                    } else Plugin.Logger.LogDebug($"{nameof(TeleportOutOfBoundsPickups)}> Failed to find a node to teleport to.");
+#if DEBUG || true
+                Plugin.Logger.LogDebug($"{nameof(MapZone_TryZoneStart)}> {self.gameObject.name}");
+#endif
+                // Try teleport to spawn location
+                if (other.TryGetComponent<OutOfBoundsPickupHelper>(out var helper)) {
+                    Vector3 position = helper.origin;
+                    TeleportHelper.TeleportGameObject(other.gameObject, position);
+                    Object.Destroy(helper);
+                    Plugin.Logger.LogDebug($"{nameof(TeleportOutOfBoundsPickups)}> Teleported pickup to {position}.");
+                }
+                // Fallback to nearest node
+                else {
+                    bool hasPickupDropletController = other.TryGetComponent<PickupDropletController>(out _);
+                    bool hasGenericPickupController = other.TryGetComponent<GenericPickupController>(out _);
+                    if (hasPickupDropletController || hasGenericPickupController) {
+                        // Logic from RoR2.Run.FindSafeTeleportPosition
+                        GameObject target = DirectorCore.instance.TrySpawnObject(new DirectorSpawnRequest(scTeleportHelper,
+                            new DirectorPlacementRule {
+                                placementMode = DirectorPlacementRule.PlacementMode.NearestNode,
+                                position = other.transform.position
+                            }, RoR2Application.rng));
+                        if (target != null) {
+                            Vector3 position = target.transform.position;
+                            TeleportHelper.TeleportGameObject(other.gameObject, position);
+                            Object.Destroy(target);
+                            Plugin.Logger.LogDebug($"{nameof(TeleportOutOfBoundsPickups)}> Teleported pickup to {position} {{ {nameof(hasPickupDropletController)}: {hasPickupDropletController}, {nameof(hasGenericPickupController)}: {hasGenericPickupController} }}.");
+                        } else Plugin.Logger.LogDebug($"{nameof(TeleportOutOfBoundsPickups)}> Failed to find a node to teleport to.");
+                    }
+                }
+            }
+        }
+
+        private class OutOfBoundsPickupHelper : MonoBehaviour
+        {
+            public Vector3 origin { get; private set; }
+
+            private void Start()
+            {
+                origin = transform.position;
+                Collider collider = GetComponent<Collider>();
+                foreach (MapZone zone in InstanceTracker.GetInstancesList<MapZone>()) {
+                    if (zone.zoneType == MapZone.ZoneType.OutOfBounds) {
+#if DEBUG || true
+                        Plugin.Logger.LogDebug($"{nameof(OutOfBoundsPickupHelper)}> {zone.gameObject.name} | {LayerMask.LayerToName(zone.gameObject.layer)} | {zone.collider.isTrigger}");
+#endif
+                        // Physics.IgnoreCollision(collider, zone.collider, false);
+                    }
                 }
             }
         }
