@@ -54,7 +54,7 @@ namespace ServerSider
             Plugin.Logger.LogDebug($"{nameof(TeleportOutOfBoundsPickups)}> Unhooked by {GetExecutingMethod()}");
         }
 
-        // Functionality ===============================
+        // Functionality ===================================
 
         private void GenericPickupController_Start(On.RoR2.GenericPickupController.orig_Start orig, GenericPickupController self)
         {

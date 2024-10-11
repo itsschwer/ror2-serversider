@@ -34,7 +34,7 @@ namespace ServerSider
             Plugin.Logger.LogDebug($"{nameof(QuitToLobbyButton)}> Unhooked by {GetExecutingMethod()}");
         }
 
-        // Functionality ===============================
+        // Functionality ===================================
 
         private static void PauseScreenController_Awake(On.RoR2.UI.PauseScreenController.orig_Awake orig, PauseScreenController self)
         {

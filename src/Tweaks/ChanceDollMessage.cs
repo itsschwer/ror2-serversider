@@ -39,7 +39,7 @@ namespace ServerSider
             Plugin.Logger.LogDebug($"{nameof(ChanceDollMessage)}> Unhooked by {GetExecutingMethod()}");
         }
 
-        // Functionality ===============================
+        // Functionality ===================================
 
         private static void ShrineChanceBehavior_AddShrineStack(ILContext il)
         {
