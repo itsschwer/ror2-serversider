@@ -15,8 +15,9 @@ namespace ServerSider
 
         public readonly RescueShipLoopPortal RescueShipLoopPortal;
         public readonly VoidFieldFogTweak VoidFieldFogTweak;
-        public readonly ChanceDollMessage ChanceDollMessage;
         public readonly QuitToLobbyButton QuitToLobbyButton;
+        public readonly SendItemCostInChat SendItemCostInChat;
+        public readonly ChanceDollMessage ChanceDollMessage;
         public readonly TeleportOutOfBoundsPickups TeleportOutOfBoundsPickups;
 
         internal TweakManager(BepInEx.Configuration.ConfigFile config)
@@ -29,11 +30,14 @@ namespace ServerSider
             VoidFieldFogTweak = new VoidFieldFogTweak(config);
             managedTweaks.Add(VoidFieldFogTweak);
 
-            ChanceDollMessage = new ChanceDollMessage(config);
-            managedTweaks.Add(ChanceDollMessage);
+            SendItemCostInChat = new SendItemCostInChat(config);
+            managedTweaks.Add(SendItemCostInChat);
 
             QuitToLobbyButton = new QuitToLobbyButton(config);
             managedTweaks.Add(QuitToLobbyButton);
+
+            ChanceDollMessage = new ChanceDollMessage(config);
+            managedTweaks.Add(ChanceDollMessage);
 
             TeleportOutOfBoundsPickups = new TeleportOutOfBoundsPickups(config);
             managedTweaks.Add(TeleportOutOfBoundsPickups);

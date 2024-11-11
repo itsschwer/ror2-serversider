@@ -17,20 +17,26 @@ Name | Effect | Enabled by default?
 ---    | ---    | ---
 `rescueShipPortal` | Spawns a portal inside the *Rescue Ship* to allow looping after defeating *Mithrix*  | `true`
 `voidFieldFogAltStart` | Changes the *Void Fields*' fog to only become active once a *Cell Vent* has been activated *(rather than on entry)* | `false`
-`chanceDollMessage` | Rewords the *Shrine of Chance* success message to indicate if a *Chance Doll* affected the reward | `true`
 `quitToLobbyButton` | Adds a "Quit to Lobby" button to the Run pause menu. <br/><br/> Useful in multiplayer for changing characters/survivors, difficulty, or artifacts without disconnecting everyone from the lobby. | `true`
+`chanceDollMessage` | Rewords the *Shrine of Chance* success message to indicate if a *Chance Doll* affected the reward | `true`
 `teleportOutOfBoundsPickups` | Teleports items that fall off the map to the nearest valid ground node. | `true`
+
+### chat additions
+Name | Effect | Enabled by default?
+---    | ---    | ---
+`sendItemCostInChat` | Sends a chat notification listing the items that are consumed when a *Scrapper*, *3D Printer*, *Cleansing Pool*, or *Cauldron* is used. | `true`
+`includeScrapInItemCost` | Includes *Item Scrap* in the list printed by `sendItemCostInChat`. | `false`
 
 ## screenshots
 
 ### `rescueShipPortal`
 ![rescue ship portal sample screenshot](https://github.com/itsschwer/ror2-serversider/blob/main/xtra/demo-rescue-ship-portal.png?raw=true)
 
-### `chanceDollMessage`
-![chance doll message sample screenshot](https://github.com/itsschwer/ror2-serversider/blob/main/xtra/demo-chance-doll-message.png?raw=true)
-
 ### `quitToLobbyButton`
 ![quit to lobby button sample screenshot](https://github.com/itsschwer/ror2-serversider/blob/main/xtra/demo-quit-to-lobby-button.png?raw=true)
+
+### `chanceDollMessage`
+![chance doll message sample screenshot](https://github.com/itsschwer/ror2-serversider/blob/main/xtra/demo-chance-doll-message.png?raw=true)
 
 ## see also
 
@@ -41,7 +47,3 @@ Name | Effect | Enabled by default?
     - also has a "restart" button to start a new run without returning to the lobby
 - [OutOfBoundsItemsFix](https://thunderstore.io/package/rob_gaming/OutOfBoundsItemsFix/) by [rob_gaming](https://thunderstore.io/package/rob_gaming/) — alternative implementation of `teleportOutOfBoundsPickups`
     - based on fall distance rather than out of bounds map zones
-
-<!--
-- [Artifactor](https://thunderstore.io/package/itsschwer/Artifactor/) <sup>[*src*](https://github.com/itsschwer/ror2-artifactor)</sup> — turns `rescueShipPortal` into an *Artifact*
--->
