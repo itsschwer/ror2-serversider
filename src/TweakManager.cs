@@ -14,6 +14,7 @@ namespace ServerSider
         public readonly List<TweakBase> managedTweaks;
 
         public readonly RescueShipLoopPortal RescueShipLoopPortal;
+        public readonly PressurePlateTweak PressurePlateTweak;
         public readonly VoidFieldFogTweak VoidFieldFogTweak;
         public readonly QuitToLobbyButton QuitToLobbyButton;
         public readonly SendItemCostInChat SendItemCostInChat;
@@ -26,6 +27,9 @@ namespace ServerSider
 
             RescueShipLoopPortal = new RescueShipLoopPortal(config);
             managedTweaks.Add(RescueShipLoopPortal);
+
+            PressurePlateTweak = new PressurePlateTweak(config);
+            managedTweaks.Add(PressurePlateTweak);
 
             VoidFieldFogTweak = new VoidFieldFogTweak(config);
             managedTweaks.Add(VoidFieldFogTweak);
