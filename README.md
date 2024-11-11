@@ -3,6 +3,7 @@
 A \[ server-side / host-only \] mod that adds small gameplay changes.
 
 ## compatibility
+
 This mod should be compatible with the *Seekers of the Storm* update ***and*** earlier patches.
 
 However, I don't have the energy to test on downpatched game versions *— please report any issues to the [GitHub repository](https://github.com/itsschwer/ror2-serversider/issues)!*
@@ -23,6 +24,7 @@ Name | Effect | Enabled by default?
 `teleportOutOfBoundsPickups` | Teleports items that fall off the map to the nearest valid ground node. | `true`
 
 ### chat additions
+
 Name | Effect | Enabled by default?
 ---    | ---    | ---
 `sendItemCostInChat` | Sends a chat notification listing the items that are consumed when a *Scrapper*, *3D Printer*, *Cleansing Pool*, or *Cauldron* is used. | `true`
@@ -34,7 +36,9 @@ Name | Effect | Enabled by default?
 ![rescue ship portal sample screenshot](https://github.com/itsschwer/ror2-serversider/blob/main/xtra/demo-rescue-ship-portal.png?raw=true)
 
 ### `pressurePlateGracePeriod`
-<mark>TODO</mark>
+<mark>REDO</mark>
+> pressure plate grace period *(config: 3s)*\
+![gif demonstration of pressure plate grace period](https://github.com/itsschwer/pressure-drop/blob/main/xtra/demo-pressure-plate-timed.gif?raw=true)
 
 ### `quitToLobbyButton`
 ![quit to lobby button sample screenshot](https://github.com/itsschwer/ror2-serversider/blob/main/xtra/demo-quit-to-lobby-button.png?raw=true)
@@ -47,8 +51,6 @@ Name | Effect | Enabled by default?
 
 ## see also
 
-- [PressureDrop](https://thunderstore.io/package/itsschwer/PressureDrop/) — my initial server-side mod, geared towards "friendlier multiplayer" *(but perfectly usable for singleplayer too)*
-<!-- -->
 - [QuickRestart](https://thunderstore.io/package/AceOfShades/QuickRestart/) <sup>[*src*](https://github.com/Maceris/quick-restart)</sup> by [AceOfShades](https://thunderstore.io/package/AceOfShades/) — alternative implementation of `quitToLobbyButton`
     - uses custom UX
     - also has a "restart" button to start a new run without returning to the lobby
