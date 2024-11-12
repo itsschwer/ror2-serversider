@@ -19,6 +19,7 @@ namespace ServerSider
         protected override void Hook()
         {
             On.RoR2.PressurePlateController.SetSwitch += PressurePlateController_SetSwitch;
+            On.RoR2.PressurePlateController.FixedUpdate += PressurePlateController_FixedUpdate;
 
             Plugin.Logger.LogDebug($"{nameof(PressurePlateTweak)}> Hooked by {GetExecutingMethod()}");
         }
@@ -26,6 +27,8 @@ namespace ServerSider
         protected override void Unhook()
         {
             On.RoR2.PressurePlateController.SetSwitch -= PressurePlateController_SetSwitch;
+            On.RoR2.PressurePlateController.FixedUpdate -= PressurePlateController_FixedUpdate;
+            platePressTimestamps.Clear();
 
             Plugin.Logger.LogDebug($"{nameof(PressurePlateTweak)}> Unhooked by {GetExecutingMethod()}");
         }
@@ -40,25 +43,39 @@ namespace ServerSider
                 if (switchIsDown != self.switchDown) {
                     string message = (Random.value <= 0.2) ? "Press your plate!" : "A pressure plate is pressed..";
                     Chat.SendBroadcastChat(new Chat.SimpleChatMessage { baseToken = "<style=cEvent>" + message + "</style>" });
-                    platePressTimestamps[self] = Time.time;
                 }
 
                 orig(self, switchIsDown);
-#if DEBUG
-                string identifier = (self != null) ? $"[{self.name}]" : "[no longer exists?]";
-                float time = Time.time - platePressTimestamps[self];
-                Chat.SendBroadcastChat(new Chat.SimpleChatMessage { baseToken = $"<style=cIsUtility>{identifier} active {time}s ({platePressTimestamps.Count} active)</style>" });
-#endif
+                platePressTimestamps[self] = Time.time;
             }
-            else if (pressurePlateGracePeriod.Value > 0 && !platePressTimestamps.TryGetValue(self, out float initialTime) && ((Time.time - initialTime) >= pressurePlateGracePeriod.Value)) {
+            else if (pressurePlateGracePeriod.Value > 0 && !platePressTimestamps.ContainsKey(self)) {
                 if (switchIsDown != self.switchDown) {
                     const string message = "A pressure plate releases...";
                     Chat.SendBroadcastChat(new Chat.SimpleChatMessage { baseToken = "<style=cEvent>" + message + "</style>" });
-                    platePressTimestamps.Remove(self);
                 }
 
                 orig(self, switchIsDown);
             }
+        }
+
+        private void PressurePlateController_FixedUpdate(On.RoR2.PressurePlateController.orig_FixedUpdate orig, PressurePlateController self)
+        {
+            orig(self);
+            if (!self.enableOverlapSphere) return;
+
+            if (platePressTimestamps.TryGetValue(self, out float initialTime)) {
+                if ((Time.time - initialTime) >= pressurePlateGracePeriod.Value) {
+                    platePressTimestamps.Remove(self);
+                }
+            }
+
+#if DEBUG
+            if (self.switchDown) {
+                string identifier = (self != null) ? $"[{self.name}]" : "[no longer exists?]";
+                float time = platePressTimestamps.TryGetValue(self, out float debugTime) ? Time.time - debugTime : -1;
+                Chat.SendBroadcastChat(new Chat.SimpleChatMessage { baseToken = $"<style=cIsUtility>{identifier} active {time}s ({platePressTimestamps.Count} active)</style>" });
+            }
+#endif
         }
     }
 }
