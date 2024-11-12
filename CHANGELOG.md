@@ -1,5 +1,8 @@
-## 
-- Port `sendItemCostInChat` (and `includeScrapInItemCost`) from [PressureDrop](https://thunderstore.io/package/itsschwer/PressureDrop/)
+## 1.4.0
+- Port features from [PressureDrop](https://thunderstore.io/package/itsschwer/PressureDrop/) <sup>[***src***](https://github.com/itsschwer/pressure-drop)</sup>
+    - `sendItemCostInChat`
+        - `includeScrapInItemCost`
+    - `pressurePlateGracePeriod` *(formerly `pressurePlateTimer`)*
 
 ## 1.3.0
 - Add `teleportOutOfBoundsPickups`

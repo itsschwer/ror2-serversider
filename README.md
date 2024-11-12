@@ -36,8 +36,7 @@ Name | Effect | Enabled by default?
 ![rescue ship portal sample screenshot](https://github.com/itsschwer/ror2-serversider/blob/main/xtra/demo-rescue-ship-portal.png?raw=true)
 
 ### `pressurePlateGracePeriod`
-<mark>REDO</mark>
-> pressure plate grace period *(config: 3s)*\
+> *config: 3s*\
 ![gif demonstration of pressure plate grace period](https://github.com/itsschwer/pressure-drop/blob/main/xtra/demo-pressure-plate-timed.gif?raw=true)
 
 ### `quitToLobbyButton`
