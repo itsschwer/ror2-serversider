@@ -34,11 +34,11 @@ namespace ServerSider
             VoidFieldFogTweak = new VoidFieldFogTweak(config);
             managedTweaks.Add(VoidFieldFogTweak);
 
-            SendItemCostInChat = new SendItemCostInChat(config);
-            managedTweaks.Add(SendItemCostInChat);
-
             QuitToLobbyButton = new QuitToLobbyButton(config);
             managedTweaks.Add(QuitToLobbyButton);
+
+            SendItemCostInChat = new SendItemCostInChat(config);
+            managedTweaks.Add(SendItemCostInChat);
 
             ChanceDollMessage = new ChanceDollMessage(config);
             managedTweaks.Add(ChanceDollMessage);

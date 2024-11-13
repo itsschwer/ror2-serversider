@@ -1,7 +1,7 @@
 ﻿{
 	"author": "itsschwer",
 	"name": "ServerSider",
-	"version_number": "1.4.0",
+	"version_number": "1.4.1",
 	"website_url": "https://github.com/itsschwer/ror2-serversider",
 	"description": "Spawn a portal inside the Rescue Ship to loop after defeating Mithrix; Configure pressure plates to stay pressed down for a duration; Quit to Lobby button; Teleport out of bounds items; and other small gameplay changes (check the README!) — [ server-side ]",
 	"dependencies": [

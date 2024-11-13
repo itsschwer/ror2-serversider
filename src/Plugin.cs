@@ -9,7 +9,7 @@ namespace ServerSider
         public const string GUID = Author + "." + Name;
         public const string Author = "itsschwer";
         public const string Name = "ServerSider";
-        public const string Version = "1.4.0";
+        public const string Version = "1.4.1";
 
         internal static new BepInEx.Logging.ManualLogSource Logger { get; private set; }
 
@@ -19,7 +19,7 @@ namespace ServerSider
         public static TweakManager Tweaks { get; private set; }
 
         private static Plugin Instance;
-        internal static bool Enabled => Instance.enabled;
+        internal static bool Enabled => Instance && Instance.enabled;
 
 
         private void Awake()
