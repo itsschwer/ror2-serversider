@@ -48,7 +48,7 @@ namespace ServerSider
                 orig(self, switchIsDown);
                 platePressTimestamps[self] = Time.time;
             }
-            else if (pressurePlateGracePeriod.Value > 0 && !platePressTimestamps.ContainsKey(self)) {
+            else if (pressurePlateGracePeriod.Value >= 0 && !platePressTimestamps.ContainsKey(self)) {
                 if (switchIsDown != self.switchDown) {
                     const string message = "A pressure plate releases...";
                     Chat.SendBroadcastChat(new Chat.SimpleChatMessage { baseToken = "<style=cEvent>" + message + "</style>" });
