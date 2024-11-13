@@ -7,7 +7,7 @@ namespace ServerSider
 {
     public class PressurePlateTweak : TweakBase
     {
-        public override bool allowed => pressurePlateGracePeriod.Value != 0;
+        public override bool allowed => Plugin.Enabled && pressurePlateGracePeriod.Value != 0;
         private static ConfigEntry<float> pressurePlateGracePeriod;
 
         internal PressurePlateTweak(ConfigFile config)
