@@ -20,6 +20,7 @@ namespace ServerSider
         public readonly SendItemCostInChat SendItemCostInChat;
         public readonly ChanceDollMessage ChanceDollMessage;
         public readonly TeleportOutOfBoundsPickups TeleportOutOfBoundsPickups;
+        public readonly PreventEarlyHalcyonShrineActivation PreventEarlyHalcyonShrineActivation;
 
         internal TweakManager(BepInEx.Configuration.ConfigFile config)
         {
@@ -45,6 +46,9 @@ namespace ServerSider
 
             TeleportOutOfBoundsPickups = new TeleportOutOfBoundsPickups(config);
             managedTweaks.Add(TeleportOutOfBoundsPickups);
+
+            PreventEarlyHalcyonShrineActivation = new PreventEarlyHalcyonShrineActivation(config);
+            managedTweaks.Add(PreventEarlyHalcyonShrineActivation);
         }
 
         internal void Refresh()
