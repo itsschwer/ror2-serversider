@@ -1,4 +1,6 @@
 ﻿using BepInEx.Configuration;
+using Mono.Cecil.Cil;
+using MonoMod.Cil;
 using MonoMod.RuntimeDetour;
 using RoR2;
 using System;
@@ -12,28 +14,29 @@ namespace ServerSider
         public override bool allowed => Plugin.Enabled && preventEarlyHalcyonShrineActivation.Value;
         private readonly ConfigEntry<bool> preventEarlyHalcyonShrineActivation;
 
-        private static readonly MethodInfo HalcyoniteShrineInteractable_TrackInteractions;
-        private static readonly Hook hook;
+        private static readonly Type targetType;
+        private static readonly MethodInfo targetMethod;
+        private static readonly ILHook hook;
 
         static PreventEarlyHalcyonShrineActivation()
         {
-            // const string HALCYON_SHRINE_TYPE_NAME = "RoR2.HalcyoniteShrineInteractable";
-            // // RoR2.PurchaseInteraction, RoR2, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-            // string fullName = typeof(PurchaseInteraction).AssemblyQualifiedName.Replace("RoR2.PurchaseInteraction", HALCYON_SHRINE_TYPE_NAME);
-            // Plugin.Logger.LogDebug(fullName);
-            // HalcyoniteShrineInteractable_TrackInteractions = Type.GetType(HALCYON_SHRINE_TYPE_NAME)?.GetMethod("TrackInteractions", BindingFlags.Instance | BindingFlags.Public);
-            HalcyoniteShrineInteractable_TrackInteractions = typeof(PurchaseInteraction).Assembly.GetType("RoR2.HalcyoniteShrineInteractable")?.GetMethod("TrackInteractions", BindingFlags.Instance | BindingFlags.Public);
+            const string typeName = "RoR2.GoldSiphonNearbyBodyController";
+            const string methodName = "DrainGold";
+            targetType = typeof(PurchaseInteraction).Assembly.GetType(typeName);
+            targetMethod = targetType?.GetMethod(methodName, BindingFlags.Instance | BindingFlags.NonPublic);
 
-            if (HalcyoniteShrineInteractable_TrackInteractions == null) {
-                Plugin.Logger.LogWarning($"{nameof(PreventEarlyHalcyonShrineActivation)}> Cannot hook: no HalcyoniteShrineInteractable.TrackInteractions method.");
+            if (targetMethod == null) {
+                Plugin.Logger.LogWarning($"{nameof(PreventEarlyHalcyonShrineActivation)}> Cannot hook: no {typeName}.{methodName} method.");
             }
-            else hook = new Hook(HalcyoniteShrineInteractable_TrackInteractions, typeof(PreventEarlyHalcyonShrineActivation).GetMethod(nameof(TrackInteractions), BindingFlags.Static | BindingFlags.NonPublic), new HookConfig { ManualApply = true });
+            else {
+                hook = new ILHook(targetMethod, GoldSiphonNearbyBodyController_DrainGold, new ILHookConfig() { ManualApply = true });
+            }
         }
 
         internal PreventEarlyHalcyonShrineActivation(ConfigFile config)
         {
             preventEarlyHalcyonShrineActivation = config.Bind<bool>("Tweaks", nameof(preventEarlyHalcyonShrineActivation), true,
-                "Disable the Halcyon Shrines pray prompt to prevent activating the shrine before it is fully charged.");
+                "Disable the \"Pray to Halcyon Shrine\" prompt to prevent activating the shrine before it is fully charged.");
         }
 
         protected override void Hook()
@@ -54,13 +57,24 @@ namespace ServerSider
 
         // Functionality ===================================
 
-        private static void TrackInteractions(Action<NetworkBehaviour> orig, NetworkBehaviour self)
+        private static void GoldSiphonNearbyBodyController_DrainGold(ILContext il)
         {
-            orig(self);
+            ILCursor c = new ILCursor(il);
 
-            if (!NetworkServer.active) return;
-            self.GetComponent<PurchaseInteraction>().Networkavailable = false;
-            Chat.AddMessage(self.name);
+            Func<Instruction, bool>[] match = {
+                x => x.MatchLdarg(0),                                                                      // IL_02b9: ldarg.0
+                x => x.MatchLdfld(targetType, "purchaseInteraction"),                                      // IL_02ba: ldfld class RoR2.PurchaseInteraction RoR2.GoldSiphonNearbyBodyController::purchaseInteraction
+                x => x.MatchLdcI4(1),                                                                      // IL_02bf: ldc.i4.1
+                x => x.MatchCallOrCallvirt<PurchaseInteraction>(nameof(PurchaseInteraction.SetAvailable)), // IL_02c0: callvirt instance void RoR2.PurchaseInteraction::SetAvailable(bool)
+            };
+
+            if (c.TryGotoNext(match)) {
+                c.RemoveRange(match.Length); // :p
+#if DEBUG
+                Plugin.Logger.LogDebug(il.ToString());
+#endif
+            }
+            else Plugin.Logger.LogError($"{nameof(PreventEarlyHalcyonShrineActivation)}> Cannot hook: failed to match IL instructions.");
         }
     }
 }
