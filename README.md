@@ -19,9 +19,10 @@ Name | Effect | Enabled by default?
 `rescueShipPortal` | Spawns a portal inside the *Rescue Ship* to allow looping after defeating *Mithrix*.  | `true`
 `pressurePlateGracePeriod` | The length of time (in seconds) that a pressure plate *(Abandoned Aqueduct)* will remain pressed after being activated.<br/><br/>Zero disables this functionality (reverts to vanilla behaviour).<br/>Negative values make pressure plates stay down forever once pressed.<br/><br/>*No more pot rolling or waiting for friends!* | `30` *(true)*
 `voidFieldFogAltStart` | Changes the *Void Fields*' fog to only become active once a *Cell Vent* has been activated *(rather than on entry)*. | `false`
-`quitToLobbyButton` | Adds a "Quit to Lobby" button to the Run pause menu. <br/><br/> Useful in multiplayer for changing characters/survivors, difficulty, or artifacts without disconnecting everyone from the lobby. | `true`
+`quitToLobbyButton` | Adds a "Quit to Lobby" button to the Run pause menu. <br/><br/> *Useful in multiplayer for changing characters/survivors, difficulty, or artifacts without disconnecting everyone from the lobby.* | `true`
 `chanceDollMessage` | Rewords the *Shrine of Chance* success message to indicate if a *Chance Doll* affected the reward. | `true`
 `teleportOutOfBoundsPickups` | Teleports items that fall off the map to the nearest valid ground node. | `true`
+`preventEarlyHalcyonShrineActivation` | Disables the "Pray to Halcyon Shrine" prompt to prevent activating the shrine before it is fully charged. <br/><br/> *Useful for preventing accidentally ending the Halcyon Shrine early when trying to interact with other nearby shrines, pickups, etc.* | `true`
 
 ### chat additions
 

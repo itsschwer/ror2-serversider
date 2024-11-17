@@ -1,3 +1,7 @@
+## 1.5.0
+- Add `preventEarlyHalcyonShrineActivation`
+- Adjust `teleportOutOfBoundsPickups` logic
+
 ### 1.4.1
 - Fix pre-emptive hooking of `pressurePlateGracePeriod` methods
 

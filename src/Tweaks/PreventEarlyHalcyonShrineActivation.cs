@@ -20,6 +20,7 @@ namespace ServerSider
 
         static PreventEarlyHalcyonShrineActivation()
         {
+            // string-based since still wanting to maintain compatibility with pre-Seekers of the Storm
             const string typeName = "RoR2.GoldSiphonNearbyBodyController";
             const string methodName = "DrainGold";
             targetType = typeof(PurchaseInteraction).Assembly.GetType(typeName);
