@@ -38,17 +38,21 @@ namespace ServerSider
         {
             orig(self);
 
-            if (self.inBoundsObjectiveToken == "OBJECTIVE_MOON_CHARGE_DROPSHIP")
-            {
-#if DEBUG
-                Plugin.Logger.LogDebug($"Dropship> pos: {self.transform.position} | rot: {self.transform.rotation} | euler: {self.transform.rotation.eulerAngles} | up: {self.transform.up} | forward: {self.transform.forward} | right: {self.transform.right}");
-#endif
-                Vector3 position = self.transform.position;
-                position += (self.transform.up * 10f);
-                position += (self.transform.forward * -3.5f);
-                position += (self.transform.right * -1.8f);
-                Quaternion rotation = Quaternion.Inverse(self.transform.rotation) * Quaternion.Euler(self.transform.up * 90f);
-                InstantiatePortal(position, rotation);
+            if (self.inBoundsObjectiveToken == "OBJECTIVE_MOON_CHARGE_DROPSHIP") {
+                Transform target = null;
+                try {
+                    // Moon2DropshipZone/HoldoutZoneContainer/HoldoutZone
+                    target = self.transform.parent.parent.Find("RescueshipMoon/escapeship/DropshipMesh");
+                }
+                catch (System.NullReferenceException e) {
+                    Plugin.Logger.LogError($"{nameof(RescueShipLoopPortal)}> {e}");
+                }
+                if (target == null) { Plugin.Logger.LogError($"{nameof(RescueShipLoopPortal)}> Failed to find \"Moon2DropshipZone/RescueshipMoon/escapeship/DropshipMesh\""); return; }
+
+                Vector3 position = target.position;
+                position += (target.up * 7f);
+                position += (target.forward * 14f);
+                InstantiatePortal(position, Quaternion.LookRotation(target.forward, -target.up)); // DropshipMesh is rotated -89.98 on x-axis (upside-down)
             }
         }
 

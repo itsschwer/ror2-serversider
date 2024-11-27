@@ -1,3 +1,6 @@
+- Refactor `rescueShipPortal` positioning logic to be relative to the mesh game object
+    - *Should now work better with mods that place their own `Moon2DropshipZone` prefab instances*
+
 ## 1.5.0
 - Add `preventEarlyHalcyonShrineActivation`
 - Adjust `teleportOutOfBoundsPickups` logic
