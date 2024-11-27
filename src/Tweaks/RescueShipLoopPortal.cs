@@ -53,6 +53,9 @@ namespace ServerSider
                 position += (target.up * 7f);
                 position += (target.forward * 14f);
                 InstantiatePortal(position, Quaternion.LookRotation(target.forward, -target.up)); // DropshipMesh is rotated -89.98 on x-axis (upside-down)
+#if DEBUG
+                Plugin.Logger.LogDebug($"{nameof(RescueShipLoopPortal)}> offset: {position - self.transform.position} [{position - target.position}]");
+#endif
             }
         }
 

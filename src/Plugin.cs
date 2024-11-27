@@ -75,22 +75,5 @@ namespace ServerSider
         }
 
         private void Disable(Run _) => SetActive(false);
-
-
-#if DEBUG
-        private void Update()
-        {
-            CharacterBody body = LocalUserManager.GetFirstLocalUser().currentNetworkUser.GetCurrentBody();
-            if (UnityEngine.Input.GetKeyDown(UnityEngine.KeyCode.Insert)) TestRescueShipLoopPortal(body);
-        }
-
-        private static void TestRescueShipLoopPortal(CharacterBody target)
-        {
-            InputBankTest input = target?.inputBank;
-            if (input == null) return;
-
-            RescueShipLoopPortal.InstantiatePortal(target.footPosition, UnityEngine.Quaternion.LookRotation(-input.aimDirection));
-        }
-#endif
     }
 }
