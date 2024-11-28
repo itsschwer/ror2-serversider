@@ -15,8 +15,9 @@ namespace ServerSider
 
         public readonly RescueShipLoopPortal RescueShipLoopPortal;
         public readonly PressurePlateTweak PressurePlateTweak;
-        public readonly VoidFieldFogTweak VoidFieldFogTweak;
         public readonly QuitToLobbyButton QuitToLobbyButton;
+        public readonly VoidPickupConfirmAll VoidPickupConfirmAll;
+        public readonly VoidFieldFogTweak VoidFieldFogTweak;
         public readonly SendItemCostInChat SendItemCostInChat;
         public readonly ChanceDollMessage ChanceDollMessage;
         public readonly TeleportOutOfBoundsPickups TeleportOutOfBoundsPickups;
@@ -32,11 +33,14 @@ namespace ServerSider
             PressurePlateTweak = new PressurePlateTweak(config);
             managedTweaks.Add(PressurePlateTweak);
 
-            VoidFieldFogTweak = new VoidFieldFogTweak(config);
-            managedTweaks.Add(VoidFieldFogTweak);
-
             QuitToLobbyButton = new QuitToLobbyButton(config);
             managedTweaks.Add(QuitToLobbyButton);
+
+            VoidPickupConfirmAll = new VoidPickupConfirmAll(config);
+            managedTweaks.Add(VoidPickupConfirmAll);
+
+            VoidFieldFogTweak = new VoidFieldFogTweak(config);
+            managedTweaks.Add(VoidFieldFogTweak);
 
             SendItemCostInChat = new SendItemCostInChat(config);
             managedTweaks.Add(SendItemCostInChat);
