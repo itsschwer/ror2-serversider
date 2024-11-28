@@ -1,3 +1,5 @@
+- Port features from [PressureDrop](https://thunderstore.io/package/itsschwer/PressureDrop/) <sup>[***src***](https://github.com/itsschwer/pressure-drop)</sup>
+    - `voidPickupConfirmAll`
 - Refactor `rescueShipPortal` positioning logic to be relative to the mesh game object
     - *Should now work better with mods that place their own `Moon2DropshipZone` prefab instances*
 
