@@ -20,7 +20,7 @@ namespace ServerSider
 
         protected override void Hook()
         {
-            StringBuilder sb = new($"{nameof(VoidPickupConfirmAll)}> Hooked by {GetExecutingMethod()}\n");
+            StringBuilder sb = new($"{nameof(VoidPickupConfirmAll)}> Hooked by {GetExecutingMethod()}");
 
             foreach (ItemTierDef def in ItemTierCatalog.allItemTierDefs) {
                 if (def.tier == ItemTier.VoidTier1 ||
@@ -30,7 +30,7 @@ namespace ServerSider
                 {
                     originalRules[def.tier] = def.pickupRules;
                     def.pickupRules = ItemTierDef.PickupRules.ConfirmAll;
-                    sb.AppendLine($"\tChanged pickup rule for item tier {def.tier} from {originalRules[def.tier]} to {def.pickupRules}");
+                    sb.Append($"\n\tChanged pickup rule for item tier {def.tier} from {originalRules[def.tier]} to {def.pickupRules}");
                 }
             }
 
