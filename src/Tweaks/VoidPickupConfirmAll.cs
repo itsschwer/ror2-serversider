@@ -1,6 +1,7 @@
 ﻿using BepInEx.Configuration;
 using RoR2;
 using System.Collections.Generic;
+using System.Text;
 
 namespace ServerSider
 {
@@ -19,6 +20,8 @@ namespace ServerSider
 
         protected override void Hook()
         {
+            StringBuilder sb = new($"{nameof(VoidPickupConfirmAll)}> Hooked by {GetExecutingMethod()}\n");
+
             foreach (ItemTierDef def in ItemTierCatalog.allItemTierDefs) {
                 if (def.tier == ItemTier.VoidTier1 ||
                     def.tier == ItemTier.VoidTier2 ||
@@ -27,11 +30,11 @@ namespace ServerSider
                 {
                     originalRules[def.tier] = def.pickupRules;
                     def.pickupRules = ItemTierDef.PickupRules.ConfirmAll;
-                    Plugin.Logger.LogDebug($"{nameof(VoidPickupConfirmAll)}> Changed pickup rule for item tier {def.tier} from {originalRules[def.tier]} to {def.pickupRules}");
+                    sb.AppendLine($"\tChanged pickup rule for item tier {def.tier} from {originalRules[def.tier]} to {def.pickupRules}");
                 }
             }
 
-            Plugin.Logger.LogDebug($"{nameof(VoidPickupConfirmAll)}> Hooked by {GetExecutingMethod()}");
+            Plugin.Logger.LogDebug(sb.ToString());
         }
 
         protected override void Unhook()
