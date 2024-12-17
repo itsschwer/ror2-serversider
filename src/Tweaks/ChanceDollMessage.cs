@@ -16,8 +16,8 @@ namespace ServerSider
 
         internal ChanceDollMessage(ConfigFile config)
         {
-            chanceDollMessage = config.Bind<bool>("Tweaks", nameof(chanceDollMessage), true,
-                "Reword the Shrine of Chance success message to indicate if a Chance Doll affected the reward.");
+            chanceDollMessage = config.Bind<bool>("Tweaks", nameof(chanceDollMessage), false,
+                "Reword the Shrine of Chance success message to indicate if a Chance Doll affected the reward.\n\nThis tweak is redundant after RoR2v1.3.6 [Seekers of the Storm Roadmap Phase 1 — Items & Elites], as this is now implemented in vanilla.");
         }
 
         protected override void Hook()
