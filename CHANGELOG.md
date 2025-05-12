@@ -1,4 +1,7 @@
-## 1.6.1
+### 1.6.2
+- Condense logging output from `voidPickupConfirmAll`
+
+### 1.6.1
 - Change the default value for `chanceDollMessage` to `false`
     - ***Risk of Rain V1.3.6 [Seekers of the Storm Roadmap Phase 1 — Items & Elites]** introduces a vanilla implementation of this tweak*
         - `<color=#53ff00>{0} offered to the shrine and was greatly rewarded!</color>`, rather than `<style=cShrine>{0} offered to the shrine and was rewarded greatly!</color>`

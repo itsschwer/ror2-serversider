@@ -6,7 +6,7 @@ A \[ server-side / host-only \] mod that adds small gameplay changes.
 
 This mod should be compatible with the *Seekers of the Storm* update ***and*** earlier patches.
 
-However, I don't have the energy to test on downpatched game versions *— please report any issues to the [GitHub repository](https://github.com/itsschwer/ror2-serversider/issues)!*
+However, I don't have the time to test on downpatched game versions *— please report any issues to the [GitHub repository](https://github.com/itsschwer/ror2-serversider/issues)!*
 
 ## gameplay changes
 
