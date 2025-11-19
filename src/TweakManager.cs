@@ -19,7 +19,6 @@ namespace ServerSider
         public readonly VoidPickupConfirmAll VoidPickupConfirmAll;
         public readonly VoidFieldFogTweak VoidFieldFogTweak;
         public readonly SendItemCostInChat SendItemCostInChat;
-        public readonly ChanceDollMessage ChanceDollMessage;
         public readonly TeleportOutOfBoundsPickups TeleportOutOfBoundsPickups;
         public readonly PreventEarlyHalcyonShrineActivation PreventEarlyHalcyonShrineActivation;
 
@@ -44,9 +43,6 @@ namespace ServerSider
 
             SendItemCostInChat = new SendItemCostInChat(config);
             managedTweaks.Add(SendItemCostInChat);
-
-            ChanceDollMessage = new ChanceDollMessage(config);
-            managedTweaks.Add(ChanceDollMessage);
 
             TeleportOutOfBoundsPickups = new TeleportOutOfBoundsPickups(config);
             managedTweaks.Add(TeleportOutOfBoundsPickups);
