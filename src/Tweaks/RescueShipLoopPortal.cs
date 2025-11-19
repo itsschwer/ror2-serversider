@@ -61,7 +61,7 @@ namespace ServerSider
 
         internal static void InstantiatePortal(Vector3 position, Quaternion rotation)
         {
-            InteractableSpawnCard isc = Addressables.LoadAssetAsync<InteractableSpawnCard>("RoR2/DLC1/GameModes/InfiniteTowerRun/InfiniteTowerAssets/iscInfiniteTowerPortal.asset").WaitForCompletion();
+            InteractableSpawnCard isc = Addressables.LoadAssetAsync<InteractableSpawnCard>(RoR2BepInExPack.GameAssetPathsBetter.RoR2_DLC1_GameModes_InfiniteTowerRun_InfiniteTowerAssets.iscInfiniteTowerPortal_asset).WaitForCompletion();
 
             // RoR2.InteractableSpawnCard.Spawn() & RoR2.ArtifactTrialMissionController.SpawnExitPortalAndIdle.OnEnter()
             GameObject gameObject = Object.Instantiate(isc.prefab, position, rotation);
