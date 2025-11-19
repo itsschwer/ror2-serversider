@@ -22,7 +22,7 @@ namespace ServerSider
         protected override void Hook()
         {
             On.RoR2.CostTypeDef.PayCost += CostTypeDef_PayCost;
-            On.RoR2.ScrapperController.BeginScrapping += ScrapperController_BeginScrapping;
+            On.RoR2.ScrapperController.BeginScrapping_UniquePickup += ScrapperController_BeginScrapping;
 
             Plugin.Logger.LogDebug($"{nameof(SendItemCostInChat)}> Hooked by {GetExecutingMethod()}");
         }
@@ -30,25 +30,23 @@ namespace ServerSider
         protected override void Unhook()
         {
             On.RoR2.CostTypeDef.PayCost -= CostTypeDef_PayCost;
-            On.RoR2.ScrapperController.BeginScrapping -= ScrapperController_BeginScrapping;
+            On.RoR2.ScrapperController.BeginScrapping_UniquePickup -= ScrapperController_BeginScrapping;
 
             Plugin.Logger.LogDebug($"{nameof(SendItemCostInChat)}> Unhooked by {GetExecutingMethod()}");
         }
 
         // Functionality ===================================
 
-        private static CostTypeDef.PayCostResults CostTypeDef_PayCost(On.RoR2.CostTypeDef.orig_PayCost orig, CostTypeDef self, int cost, Interactor activator, UnityEngine.GameObject purchasedObject, Xoroshiro128Plus rng, ItemIndex avoidedItemIndex)
+        private static void CostTypeDef_PayCost(On.RoR2.CostTypeDef.orig_PayCost orig, CostTypeDef self, CostTypeDef.PayCostContext context, CostTypeDef.PayCostResults result)
         {
-            CostTypeDef.PayCostResults __result = orig(self, cost, activator, purchasedObject, rng, avoidedItemIndex);
+            orig(self, context, result);
 
             try {
-                CostTypeDef_PayCost(__result, activator, purchasedObject);
+                CostTypeDef_PayCost(result, context.activator, context.purchasedObject);
             }
             catch (System.Exception e) {
                 Plugin.Logger.LogError(e);
             }
-
-            return __result;
         }
 
         private static void CostTypeDef_PayCost(CostTypeDef.PayCostResults __result, Interactor activator, UnityEngine.GameObject purchasedObject)
@@ -63,15 +61,14 @@ namespace ServerSider
 
             Dictionary<PickupDef, int> exchanged = [];
             // RoR2.PurchaseInteraction.OnInteractionBegin()
-            foreach (ItemIndex item in __result.itemsTaken) {
-                if (!includeScrapInItemCost.Value && IsScrap(item)) continue;
+            foreach (Inventory.ItemAndStackValues itemStack in __result.itemStacksTaken) {
+                if (!includeScrapInItemCost.Value && IsScrap(itemStack.itemIndex)) continue;
 
-                PickupDef def = PickupCatalog.GetPickupDef(PickupCatalog.FindPickupIndex(item));
-                if (!exchanged.ContainsKey(def)) exchanged[def] = 0;
-                exchanged[def]++;
+                PickupDef def = PickupCatalog.GetPickupDef(PickupCatalog.FindPickupIndex(itemStack.itemIndex));
+                exchanged[def] = itemStack.stackValues.permanentStacks;
             }
-            foreach (EquipmentIndex item in __result.equipmentTaken) {
-                PickupDef def = PickupCatalog.GetPickupDef(PickupCatalog.FindPickupIndex(item));
+            foreach (EquipmentIndex equipment in __result.equipmentTaken) {
+                PickupDef def = PickupCatalog.GetPickupDef(PickupCatalog.FindPickupIndex(equipment));
                 if (!exchanged.ContainsKey(def)) exchanged[def] = 0;
                 exchanged[def]++;
             }
@@ -79,28 +76,28 @@ namespace ServerSider
             AnnounceExchangedItems(exchanged, user, action);
         }
 
-        private static void ScrapperController_BeginScrapping(On.RoR2.ScrapperController.orig_BeginScrapping orig, ScrapperController self, int intPickupIndex)
+        private static void ScrapperController_BeginScrapping(On.RoR2.ScrapperController.orig_BeginScrapping_UniquePickup orig, ScrapperController self, UniquePickup pickupToTake)
         {
             int before;
             PickupDef pickupDef;
             CharacterBody body;
             try {
-                pickupDef = PickupCatalog.GetPickupDef(new PickupIndex(intPickupIndex));
+                pickupDef = PickupCatalog.GetPickupDef(pickupToTake.pickupIndex);
                 body = self.interactor.GetComponent<CharacterBody>();
-                before = body.inventory.GetItemCount(pickupDef.itemIndex);
+                before = body.inventory.GetItemCountPermanent(pickupDef.itemIndex);
             }
             catch (System.Exception e) {
                 Plugin.Logger.LogError(e);
                 return;
             }
             finally {
-                orig(self, intPickupIndex);
+                orig(self, pickupToTake);
             }
 
             NetworkUser user = body?.master?.playerCharacterMasterController?.networkUser;
             if (user == null) return;
 
-            int after = body.inventory.GetItemCount(pickupDef.itemIndex);
+            int after = body.inventory.GetItemCountPermanent(pickupDef.itemIndex);
             AnnounceExchangedItems(new Dictionary<PickupDef, int>() { { pickupDef, before - after } }, user, "scrapped");
         }
 

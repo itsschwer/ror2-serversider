@@ -54,8 +54,13 @@ namespace ServerSider
         internal void Refresh()
         {
             for (int i = 0; i < managedTweaks.Count; i++) {
-                managedTweaks[i].Disable();
-                if (managedTweaks[i].allowed) managedTweaks[i].Enable();
+                try {
+                    managedTweaks[i].Disable();
+                    if (managedTweaks[i].allowed) managedTweaks[i].Enable();
+                }
+                catch (System.Exception e) {
+                    Plugin.Logger.LogError(e);
+                }
             }
         }
     }
