@@ -65,7 +65,8 @@ namespace ServerSider
                 if (!includeScrapInItemCost.Value && IsScrap(itemStack.itemIndex)) continue;
 
                 PickupDef def = PickupCatalog.GetPickupDef(PickupCatalog.FindPickupIndex(itemStack.itemIndex));
-                exchanged[def] = itemStack.stackValues.permanentStacks;
+                if (!exchanged.ContainsKey(def)) exchanged[def] = 0;
+                exchanged[def] += itemStack.stackValues.permanentStacks; // reforging consumes separate stacks of 1
             }
             foreach (EquipmentIndex equipment in __result.equipmentTaken) {
                 PickupDef def = PickupCatalog.GetPickupDef(PickupCatalog.FindPickupIndex(equipment));
