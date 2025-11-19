@@ -1,6 +1,7 @@
 ## 1.7.0
 - Initial fix for the Alloyed Collective patch
     - <mark>*This version of the mod is not compatible with earlier patches of the game. Please use the previous version of this mod if playing on an older game version!*</mark>
+- Refactor `preventEarlyHalcyonShrineActivation` to utilise updated game libs
 - Remove `chanceDollMessage`
     - *Can't use this version of the mod on a downpatched game anyway*
 
