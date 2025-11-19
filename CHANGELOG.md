@@ -1,3 +1,9 @@
+## 1.7.0
+- Initial fix for the Alloyed Collective patch
+    - <mark>*This version of the mod is not compatible with earlier patches of the game. Please use the previous version of this mod if playing on an older game version!*</mark>
+- Remove `chanceDollMessage`
+    - *Can't use this version of the mod on a downpatched game anyway*
+
 ### 1.6.2
 - Condense logging output from `voidPickupConfirmAll`
 

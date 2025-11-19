@@ -9,7 +9,7 @@ namespace ServerSider
         public const string GUID = Author + "." + Name;
         public const string Author = "itsschwer";
         public const string Name = "ServerSider";
-        public const string Version = "1.6.2";
+        public const string Version = "1.7.0";
 
         internal static new BepInEx.Logging.ManualLogSource Logger { get; private set; }
 
