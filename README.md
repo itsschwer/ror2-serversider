@@ -2,11 +2,14 @@
 
 A \[ server-side / host-only \] mod that adds small gameplay changes.
 
-## compatibility
+## versions
+> *Check the **changelog** to see version differences!*
 
-This mod should be compatible with the *Seekers of the Storm* update ***and*** earlier patches.
+- If playing on the *Alloyed Collective* patch, use the latest available version of this mod
+- If playing on a game version ***before*** the *Alloyed Collective* patch *(i.e. Seekers of the Storm, Devotion, pre-Devotion)*, please use version `1.6.2` of this mod
 
-However, I don't have the time to test on downpatched game versions *— please report any issues to the [GitHub repository](https://github.com/itsschwer/ror2-serversider/issues)!*
+*Please report any issues to the [GitHub repository](https://github.com/itsschwer/ror2-serversider/issues)!*
+
 
 ## gameplay changes
 
@@ -31,6 +34,7 @@ Name | Effect | Enabled by default?
 `sendItemCostInChat` | Sends a chat notification listing the items that are consumed when a *Scrapper*, *3D Printer*, *Cleansing Pool*, or *Cauldron* is used. | `true`
 `includeScrapInItemCost` | Includes *Item Scrap* in the list printed by `sendItemCostInChat`. | `false`
 
+
 ## screenshots
 
 ### `rescueShipPortal`
@@ -45,6 +49,11 @@ Name | Effect | Enabled by default?
 
 ### `sendItemCostInChat`
 ![printing, scrapping, reforging, and cleansing chat message screenshot](https://github.com/itsschwer/ror2-serversider/blob/main/xtra/demo-item-cost-in-chat.png?raw=true)
+
+
+## known issues
+- `pressurePlateGracePeriod`: pressure plates will not remain visually pressed down on clients
+
 
 ## see also
 

@@ -1,3 +1,9 @@
+### 1.7.1
+- Update readme
+    - Change 'compatibility' section to 'versions' (for downpatching)
+    - Add 'known issues' section
+- Expand logging output for `teleportOutOfBoundsPickups`
+
 ## 1.7.0
 - Initial fix for the Alloyed Collective patch
     - <mark>*This version of the mod is not compatible with earlier patches of the game. Please use the previous version of this mod if playing on an older game version!*</mark>

@@ -10,6 +10,9 @@ namespace ServerSider
         public override bool allowed => Plugin.Enabled && teleportOutOfBoundsPickups.Value;
         private readonly ConfigEntry<bool> teleportOutOfBoundsPickups;
 
+        private const string mapZoneLayerName = "CollideWithCharacterHullOnly";
+        private static int dropletLayer => PickupDropletController.pickupDropletPrefab.layer;
+
         private bool vanillaIgnoreLayerCollision;
         private static SpawnCard _scTeleportHelper;
         private static SpawnCard scTeleportHelper {
@@ -34,19 +37,23 @@ namespace ServerSider
 
         protected override void Hook()
         {
-            vanillaIgnoreLayerCollision = Physics.GetIgnoreLayerCollision(LayerMask.NameToLayer("CollideWithCharacterHullOnly"), PickupDropletController.pickupDropletPrefab.layer);
-            Physics.IgnoreLayerCollision(LayerMask.NameToLayer("CollideWithCharacterHullOnly"), PickupDropletController.pickupDropletPrefab.layer, false);
+            StringBuilder sb = new($"{nameof(TeleportOutOfBoundsPickups)}> Hooked by {GetExecutingMethod()}");
+
+            int mapZoneLayer = LayerMask.NameToLayer(mapZoneLayerName);
+            vanillaIgnoreLayerCollision = Physics.GetIgnoreLayerCollision(mapZoneLayer, dropletLayer);
+            Physics.IgnoreLayerCollision(mapZoneLayer, dropletLayer, false);
+            sb.Append($"\n\tChanged ignore layer collision rule between layers {mapZoneLayer} and {dropletLayer} from {vanillaIgnoreLayerCollision} to {false}");
 
             On.RoR2.MapZone.TryZoneStart += MapZone_TryZoneStart;
             On.RoR2.PickupDropletController.Start += PickupDropletController_Start;
             On.RoR2.GenericPickupController.Start += GenericPickupController_Start;
 
-            Plugin.Logger.LogDebug($"{nameof(TeleportOutOfBoundsPickups)}> Hooked by {GetExecutingMethod()}");
+            Plugin.Logger.LogDebug(sb.ToString());
         }
 
         protected override void Unhook()
         {
-            Physics.IgnoreLayerCollision(LayerMask.NameToLayer("CollideWithCharacterHullOnly"), PickupDropletController.pickupDropletPrefab.layer, vanillaIgnoreLayerCollision);
+            Physics.IgnoreLayerCollision(LayerMask.NameToLayer(mapZoneLayerName), dropletLayer, vanillaIgnoreLayerCollision);
 
             On.RoR2.MapZone.TryZoneStart -= MapZone_TryZoneStart;
             On.RoR2.PickupDropletController.Start -= PickupDropletController_Start;
