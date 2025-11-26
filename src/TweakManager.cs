@@ -21,6 +21,7 @@ namespace ServerSider
         public readonly SendItemCostInChat SendItemCostInChat;
         public readonly TeleportOutOfBoundsPickups TeleportOutOfBoundsPickups;
         public readonly UnwrapCommandEssence UnwrapCommandEssence;
+        public readonly DeadDroneVisibility DeadDroneVisibility;
         public readonly PreventEarlyHalcyonShrineActivation PreventEarlyHalcyonShrineActivation;
 
         internal TweakManager(BepInEx.Configuration.ConfigFile config)
@@ -50,6 +51,9 @@ namespace ServerSider
 
             UnwrapCommandEssence = new UnwrapCommandEssence(config);
             managedTweaks.Add(UnwrapCommandEssence);
+
+            DeadDroneVisibility = new DeadDroneVisibility(config);
+            managedTweaks.Add(DeadDroneVisibility);
 
             PreventEarlyHalcyonShrineActivation = new PreventEarlyHalcyonShrineActivation(config);
             managedTweaks.Add(PreventEarlyHalcyonShrineActivation);
