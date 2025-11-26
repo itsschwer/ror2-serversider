@@ -20,6 +20,7 @@ namespace ServerSider
         public readonly VoidFieldFogTweak VoidFieldFogTweak;
         public readonly SendItemCostInChat SendItemCostInChat;
         public readonly TeleportOutOfBoundsPickups TeleportOutOfBoundsPickups;
+        public readonly UnwrapCommandEssence UnwrapCommandEssence;
         public readonly PreventEarlyHalcyonShrineActivation PreventEarlyHalcyonShrineActivation;
 
         internal TweakManager(BepInEx.Configuration.ConfigFile config)
@@ -46,6 +47,9 @@ namespace ServerSider
 
             TeleportOutOfBoundsPickups = new TeleportOutOfBoundsPickups(config);
             managedTweaks.Add(TeleportOutOfBoundsPickups);
+
+            UnwrapCommandEssence = new UnwrapCommandEssence(config);
+            managedTweaks.Add(UnwrapCommandEssence);
 
             PreventEarlyHalcyonShrineActivation = new PreventEarlyHalcyonShrineActivation(config);
             managedTweaks.Add(PreventEarlyHalcyonShrineActivation);
