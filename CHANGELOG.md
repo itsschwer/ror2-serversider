@@ -1,3 +1,5 @@
+- Add `UnwrapCommandEssence`
+
 ### 1.7.1
 - Update readme
     - Change 'compatibility' section to 'versions' (for downpatching)

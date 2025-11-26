@@ -14,7 +14,7 @@ namespace ServerSider
         internal UnwrapCommandEssence(ConfigFile config)
         {
             unwrapCommandEssence = config.Bind<bool>("Tweaks", nameof(unwrapCommandEssence), true,
-                "");
+                "Command Essence droplets drop directly as the contained item if there is only one choice.");
         }
 
         protected override void Hook()
@@ -57,8 +57,8 @@ namespace ServerSider
 #endif
                     return options.Length == 1;
                 });
-                c.Emit(OpCodes.Brfalse, createNormalPickup);
-#if DEBUG || true
+                c.Emit(OpCodes.Brtrue, createNormalPickup);
+#if DEBUG
                 Plugin.Logger.LogDebug(il.ToString());
 #endif
             }
