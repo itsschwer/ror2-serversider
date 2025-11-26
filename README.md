@@ -1,6 +1,6 @@
 # server sider
 
-A \[ server-side / host-only \] mod that adds small gameplay changes.
+A \[ server-side / host-only \] mod that adds optional small quality of life gameplay changes.
 
 ## versions
 > *Check the **changelog** to see version differences!*

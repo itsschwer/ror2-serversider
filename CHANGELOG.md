@@ -1,4 +1,5 @@
-- Add `UnwrapCommandEssence`
+## 1.8.0
+- Add `unwrapCommandEssence`
 
 ### 1.7.1
 - Update readme
