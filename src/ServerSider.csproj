@@ -3,6 +3,7 @@
         <TargetFramework>netstandard2.1</TargetFramework>
         <LangVersion>preview</LangVersion>
         <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+        <DefineConstants Condition="'$(TargetFramework)' != 'NetStandard2.0'">ALLOYED_COLLECTIVE</DefineConstants>
     </PropertyGroup>
 
     <ItemGroup>
@@ -12,7 +13,8 @@
         </PackageReference>
         <PackageReference Include="BepInEx.Core" Version="5.4.21" />
         <PackageReference Include="RiskOfRain2.GameLibs" Version="1.4.0-r.0" />
-        <PackageReference Include="RoR2BepInExPack" Version="1.33.0" />
+        <PackageReference Include="UnityEngine.Modules" Version="2019.4.26" />
+        <!-- <PackageReference Include="RoR2BepInExPack" Version="1.33.0" /> -->
         <PackageReference Include="MMHOOK.RoR2" Version="2025.11.19">
             <NoWarn>NU1701</NoWarn>
         </PackageReference>

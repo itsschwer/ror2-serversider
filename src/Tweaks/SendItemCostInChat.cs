@@ -5,6 +5,7 @@ using System.Linq;
 
 namespace ServerSider
 {
+    //todo: compile backwards compatibility (#if directives)
     public class SendItemCostInChat : TweakBase
     {
         public override bool allowed => Plugin.Enabled && sendItemCostInChat.Value;

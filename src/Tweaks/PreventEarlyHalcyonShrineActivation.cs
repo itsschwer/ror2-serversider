@@ -19,20 +19,24 @@ namespace ServerSider
 
         protected override void Hook()
         {
+#if NETSTANDARD2_1_OR_GREATER
             IL.RoR2.GoldSiphonNearbyBodyController.DrainGold += GoldSiphonNearbyBodyController_DrainGold;
 
             Plugin.Logger.LogDebug($"{nameof(PreventEarlyHalcyonShrineActivation)}> Hooked by {GetExecutingMethod()}");
+#endif
         }
 
         protected override void Unhook()
         {
+#if NETSTANDARD2_1_OR_GREATER
             IL.RoR2.GoldSiphonNearbyBodyController.DrainGold -= GoldSiphonNearbyBodyController_DrainGold;
 
             Plugin.Logger.LogDebug($"{nameof(PreventEarlyHalcyonShrineActivation)}> Unhooked by {GetExecutingMethod()}");
+#endif
         }
 
         // Functionality ===================================
-
+#if NETSTANDARD2_1_OR_GREATER
         private static void GoldSiphonNearbyBodyController_DrainGold(ILContext il)
         {
             ILCursor c = new ILCursor(il);
@@ -52,5 +56,6 @@ namespace ServerSider
             }
             else Plugin.Logger.LogError($"{nameof(PreventEarlyHalcyonShrineActivation)}> Cannot hook: failed to match IL instructions.");
         }
+#endif
     }
 }
