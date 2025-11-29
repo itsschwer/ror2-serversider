@@ -25,7 +25,7 @@ Name | Effect | Enabled by default?
 `voidPickupConfirmAll` | Always require confirmation *(i.e. Interact input)* to pick up void items. <br/><br/> *Intended to encourage sharing void items in multiplayer.* | `true`
 `voidFieldFogAltStart` | Changes the *Void Fields*' fog to only become active once a *Cell Vent* has been activated *(rather than on entry)*. | `false`
 `teleportOutOfBoundsPickups` | Teleports items that fall off the map to the nearest valid ground node. | `true`
-`unwrapCommandEssence` | Command Essence droplets drop directly as the contained item if there is only one choice. | `true`
+`unwrapCommandEssence` | *Command Essence* droplets drop directly as the contained item if there is only one choice. | `true`
 `preventEarlyHalcyonShrineActivation` | Disables the "Pray to Halcyon Shrine" prompt to prevent activating the shrine before it is fully charged. <br/><br/> *Useful for preventing accidentally ending the Halcyon Shrine early when trying to interact with other nearby shrines, pickups, etc.* | `true`
 
 ### chat additions
