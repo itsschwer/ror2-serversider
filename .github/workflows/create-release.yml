@@ -12,6 +12,6 @@ jobs:
   create-release:
     permissions:
       contents: write
-    uses: itsschwer/pressure-drop/.github/workflows/create-release.yml@main
+    uses: itsschwer/ror2-damage-log/.github/workflows/create-release.yml@main
     with:
       debug: ${{ inputs.debug }}

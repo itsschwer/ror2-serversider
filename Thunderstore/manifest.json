@@ -1,7 +1,7 @@
 ﻿{
 	"author": "itsschwer",
 	"name": "ServerSider",
-	"version_number": "1.8.0",
+	"version_number": "0.0.0",
 	"website_url": "https://github.com/itsschwer/ror2-serversider",
 	"description": "Adds small quality of life gameplay changes (check the README!): Post-Mithrix loop portal; Pressure plates stay pressed down for a duration; Quit to Lobby button; Teleport out of bounds items; Unwrap Command Essence droplets — [ server-side ]",
 	"dependencies": [
