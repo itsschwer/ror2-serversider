@@ -1,25 +1,24 @@
 ﻿using BepInEx.Configuration;
 using Mono.Cecil.Cil;
 using MonoMod.Cil;
+using RoR2;
 using System;
 
 namespace ServerSider
 {
     public class DeadDroneVisibility : TweakBase
     {
-        public override bool allowed => false;// Plugin.Enabled && deadDroneVisibility.Value;
+        public override bool allowed => Plugin.Enabled && deadDroneVisibility.Value;
         private readonly ConfigEntry<bool> deadDroneVisibility;
 
         internal DeadDroneVisibility(ConfigFile config)
         {
-            return;
             deadDroneVisibility = config.Bind<bool>("Tweaks", nameof(deadDroneVisibility), true,
                 "TODO");
         }
 
         protected override void Hook()
         {
-            return;
             IL.EntityStates.Drone.DeathState.OnImpactServer += Drone_DeathState_OnImpactServer;
 
             Plugin.Logger.LogDebug($"{nameof(DeadDroneVisibility)}> Hooked by {GetExecutingMethod()}");
@@ -27,7 +26,6 @@ namespace ServerSider
 
         protected override void Unhook()
         {
-            return;
             IL.EntityStates.Drone.DeathState.OnImpactServer -= Drone_DeathState_OnImpactServer;
 
             Plugin.Logger.LogDebug($"{nameof(DeadDroneVisibility)}> Unhooked by {GetExecutingMethod()}");
@@ -39,15 +37,42 @@ namespace ServerSider
         {
             ILCursor c = new ILCursor(il);
 
+            int loc = -1;
+
             Func<Instruction, bool>[] match = {
-                // TODO
+                // GameObject gameObject = DirectorCore.instance.TrySpawnObject(new DirectorSpawnRequest(spawnCard, placementRule, new Xoroshiro128Plus(0uL)));
+                x => x.MatchCallOrCallvirt<DirectorCore>($"get_{nameof(DirectorCore.instance)}"),
+                x => x.MatchLdloc(out int _),
+                x => x.MatchLdloc(out int _),
+                x => x.MatchLdcI4(out int _),
+                x => x.MatchConvI8(),
+                x => x.MatchNewobj(out _),
+                x => x.MatchNewobj(out _),
+                x => x.MatchCallOrCallvirt<DirectorCore>(nameof(DirectorCore.TrySpawnObject)),
+                x => x.MatchStloc(out loc),
+                // if ((bool)gameObject)
+                x => x.MatchLdloc(loc),
+                x => x.MatchCallOrCallvirt<UnityEngine.Object>("op_Implicit"),
+                x => x.MatchBrfalse(out ILLabel _)
             };
 
-            if (c.TryGotoNext(match)) {
+            if (c.TryGotoNext(MoveType.After, match)) {
                 // TODO
                 // need networkspawn an existing usable beam prefab?
                 // or maybe networkspawn a shield wall power pedestal pyramid and steal the beam vfx?
                 // (is reparenting game objects and destroying leftovers feasible (synced from server to clients)?)
+
+                c.Emit(OpCodes.Ldloc, loc);
+                c.EmitDelegate<Action<UnityEngine.GameObject>>((spawned) => {
+                    Plugin.Logger.LogWarning(spawned.name);
+                    var lr = spawned.AddComponent<UnityEngine.LineRenderer>();
+                    lr.SetPositions([spawned.transform.position, spawned.transform.position + UnityEngine.Vector3.up * 100]);
+                    lr.startWidth = 0.2f;
+                    lr.endWidth = 0f;
+                    lr.startColor = UnityEngine.Color.red;
+                    lr.endColor = UnityEngine.Color.yellow;
+                    lr.material = new UnityEngine.Material(LegacyShaderAPI.Find("Hopoo Games/FX/Vertex Colors Only"));
+                });
 #if DEBUG || true
                 Plugin.Logger.LogDebug(il.ToString());
 #endif
