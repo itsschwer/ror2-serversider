@@ -62,18 +62,24 @@ namespace ServerSider
                 // or maybe networkspawn a shield wall power pedestal pyramid and steal the beam vfx?
                 // (is reparenting game objects and destroying leftovers feasible (synced from server to clients)?)
 
+                // "RoR2/DLC3/PowerOrbPedestal/PowerPedestal_Pyramid.prefab"
+
                 c.Emit(OpCodes.Ldloc, loc);
                 c.EmitDelegate<Action<UnityEngine.GameObject>>((spawned) => {
                     Plugin.Logger.LogWarning(spawned.name);
-                    var lr = spawned.AddComponent<UnityEngine.LineRenderer>();
+                    var go = new UnityEngine.GameObject("beam", typeof(UnityEngine.LineRenderer));
+                    go.transform.parent = spawned.transform;
+                    var lr = go.GetComponent<UnityEngine.LineRenderer>();
                     lr.SetPositions([spawned.transform.position, spawned.transform.position + UnityEngine.Vector3.up * 100]);
                     lr.startWidth = 0.2f;
                     lr.endWidth = 0f;
                     lr.startColor = UnityEngine.Color.red;
                     lr.endColor = UnityEngine.Color.yellow;
                     lr.material = new UnityEngine.Material(LegacyShaderAPI.Find("Hopoo Games/FX/Vertex Colors Only"));
+                    UnityEngine.Networking.NetworkServer.Spawn(go);
+                    Plugin.Logger.LogWarning($"verify: {UnityEngine.Networking.NetworkServer.VerifyCanSpawn(go)}");
                 });
-#if DEBUG || true
+#if DEBUG
                 Plugin.Logger.LogDebug(il.ToString());
 #endif
             }
