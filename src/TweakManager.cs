@@ -27,6 +27,8 @@ namespace ServerSider
         {
             managedTweaks = new List<TweakBase>();
 
+            config.SaveOnConfigSet = false;
+
             RescueShipLoopPortal = new RescueShipLoopPortal(config);
             managedTweaks.Add(RescueShipLoopPortal);
 
@@ -53,6 +55,9 @@ namespace ServerSider
 
             PreventEarlyHalcyonShrineActivation = new PreventEarlyHalcyonShrineActivation(config);
             managedTweaks.Add(PreventEarlyHalcyonShrineActivation);
+
+            config.SaveOnConfigSet = true;
+            config.Save();
         }
 
         internal void Refresh()
