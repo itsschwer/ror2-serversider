@@ -22,7 +22,11 @@ namespace ServerSider
 
         protected override void Hook()
         {
+#if HALLOWED_CONCEPTS
+            On.RoR2.CostTypeDef.PayCost_PayCostContext_PayCostResults += CostTypeDef_PayCost;
+#else
             On.RoR2.CostTypeDef.PayCost += CostTypeDef_PayCost;
+#endif
             On.RoR2.ScrapperController.BeginScrapping_UniquePickup += ScrapperController_BeginScrapping;
 
             Plugin.Logger.LogDebug($"{nameof(SendItemCostInChat)}> Hooked by {GetExecutingMethod()}");
@@ -30,7 +34,11 @@ namespace ServerSider
 
         protected override void Unhook()
         {
+#if HALLOWED_CONCEPTS
+            On.RoR2.CostTypeDef.PayCost_PayCostContext_PayCostResults -= CostTypeDef_PayCost;
+#else
             On.RoR2.CostTypeDef.PayCost -= CostTypeDef_PayCost;
+#endif
             On.RoR2.ScrapperController.BeginScrapping_UniquePickup -= ScrapperController_BeginScrapping;
 
             Plugin.Logger.LogDebug($"{nameof(SendItemCostInChat)}> Unhooked by {GetExecutingMethod()}");
@@ -38,7 +46,12 @@ namespace ServerSider
 
         // Functionality ===================================
 
+#if HALLOWED_CONCEPTS
+
+        private static void CostTypeDef_PayCost(On.RoR2.CostTypeDef.orig_PayCost_PayCostContext_PayCostResults orig, CostTypeDef self, CostTypeDef.PayCostContext context, CostTypeDef.PayCostResults result)
+#else
         private static void CostTypeDef_PayCost(On.RoR2.CostTypeDef.orig_PayCost orig, CostTypeDef self, CostTypeDef.PayCostContext context, CostTypeDef.PayCostResults result)
+#endif
         {
             orig(self, context, result);
 
