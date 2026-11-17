@@ -5,8 +5,9 @@ A \[ server-side / host-only \] mod that adds optional small quality of life gam
 ## versions
 > *Check the **changelog** to see version differences!*
 
-- If playing on the *Alloyed Collective* patch, use the latest available version of this mod
 - If playing on a game version ***before*** the *Alloyed Collective* patch *(i.e. Seekers of the Storm, Devotion, pre-Devotion)*, please use version `1.6.2` of this mod
+- If playing on a game version ***before*** the *Hallowed Concepts* patch *(i.e. Alloyed Collective)*, please use version `1.8.0` of this mod
+- Otherwise, use the latest available version of this mod
 
 *Please report any issues to the [GitHub repository](https://github.com/itsschwer/ror2-serversider/issues)!*
 

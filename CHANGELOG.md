@@ -1,3 +1,6 @@
+### 1.8.1
+- Fix `sendItemCostInChat` for the Hallowed Concepts patch *(preliminary?)*
+
 ## 1.8.0
 - Add `unwrapCommandEssence`
 
